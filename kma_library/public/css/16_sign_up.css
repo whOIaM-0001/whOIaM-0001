@@ -1,0 +1,447 @@
+/* Sign Up — cùng phong cách với Sign In (neumorphism) */
+:root {
+    --bg: #e9eef6;
+    --card: #e9eef6;
+    --shadow-dark: #c7cfdf;
+    --shadow-light: #ffffff;
+    --text: #3f4668;
+    --muted: #8d95b3;
+    --ring: #d7deee;
+    --ok: #22c55e;
+    --bad: #ef4444;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+}
+
+html,
+body {
+    height: 100%
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: radial-gradient(1200px 400px at 50% -40%, rgba(255, 255, 255, .9), transparent), var(--bg);
+    color: var(--text);
+}
+
+.page-glow {
+    position: fixed;
+    inset: -40% -20% auto -20%;
+    height: 50vh;
+    background: radial-gradient(500px 200px at 50% 0, rgba(255, 255, 255, .9), transparent);
+    filter: blur(30px);
+    opacity: .8;
+    pointer-events: none;
+}
+
+.signin-wrap {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+}
+
+.signin-card {
+    width: 420px;
+    max-width: 100%;
+    background: var(--card);
+    border-radius: 24px;
+    padding: 28px 28px 22px;
+    box-shadow: 18px 18px 44px var(--shadow-dark), -18px -18px 44px var(--shadow-light);
+    position: relative;
+}
+
+.brand {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.brand-logo {
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    margin-inline: auto;
+    margin-bottom: 14px;
+    display: grid;
+    place-items: center;
+    background: var(--card);
+    box-shadow: 10px 10px 24px var(--shadow-dark), -10px -10px 24px var(--shadow-light),
+        inset 0 0 0 var(--shadow-dark), inset 0 0 0 var(--shadow-light);
+    overflow: hidden;
+}
+
+.brand-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    display: block;
+}
+
+.brand h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: .2px;
+    color: #2f3556;
+}
+
+.form {
+    margin-top: 16px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.input {
+    position: relative;
+    background: var(--card);
+    border-radius: 12px;
+    height: 48px;
+    box-shadow: inset 8px 8px 16px var(--shadow-dark), inset -8px -8px 16px var(--shadow-light);
+    transition: box-shadow .2s ease, transform .2s ease;
+    overflow: visible;
+}
+
+.input:focus-within {
+    box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+}
+
+.input input,
+.input select {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    padding: 0 44px;
+    color: var(--text);
+    font-size: .96rem;
+    font-weight: 600;
+    appearance: none;
+}
+
+.input input::placeholder {
+    color: transparent;
+}
+
+.input label {
+    position: absolute;
+    left: 44px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-weight: 500;
+    pointer-events: none;
+    font-size: .96rem;
+    transition: all .18s ease;
+}
+
+.input.focused label,
+.input.has-value label {
+    top: -12px;
+    transform: none;
+    font-size: .78rem;
+    color: #6c7293;
+    opacity: 1;
+    background: var(--card);
+    padding: 0 6px;
+    border-radius: 6px;
+}
+
+.leading-icon,
+.trailing-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    color: #9aa2be;
+    display: grid;
+    place-items: center;
+}
+
+.leading-icon {
+    left: 12px;
+}
+
+.trailing-icon {
+    right: 12px;
+}
+
+.toggle {
+    appearance: none;
+    border: 0;
+    background: var(--card);
+    cursor: pointer;
+    border-radius: 10px;
+    width: 36px;
+    height: 36px;
+    box-shadow: 4px 4px 10px var(--shadow-dark), -4px -4px 10px var(--shadow-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle .eye {
+    width: 18px;
+    height: 18px
+}
+
+.toggle .eye-closed {
+    display: none;
+}
+
+.toggle.show .eye-open {
+    display: none;
+}
+
+.toggle.show .eye-closed {
+    display: block;
+}
+
+.btn {
+    width: 100%;
+    height: 50px;
+    border: 0;
+    cursor: pointer;
+    border-radius: 14px;
+    color: #303759;
+    font-weight: 700;
+    background: var(--card);
+    box-shadow: 8px 8px 20px var(--shadow-dark), -8px -8px 20px var(--shadow-light);
+    transition: transform .18s ease, box-shadow .18s ease, opacity .2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: inset 4px 4px 10px var(--shadow-dark), inset -4px -4px 10px var(--shadow-light);
+}
+
+.btn[disabled] {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.btn .btn-text {
+    position: relative;
+    z-index: 2;
+}
+
+.btn .btn-loader {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    transition: opacity .2s ease;
+}
+
+.btn.loading .btn-text {
+    opacity: 0;
+}
+
+.btn.loading .btn-loader {
+    opacity: 1;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid var(--shadow-dark);
+    border-top-color: #727ba1;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error {
+    display: block;
+    min-height: 18px;
+    margin: 6px 4px 0 4px;
+    color: #e65376;
+    font-size: .8rem;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: all .18s ease;
+}
+
+.form-group.invalid .error {
+    opacity: 1;
+    transform: none;
+}
+
+.form-group.invalid .input {
+    box-shadow: inset 8px 8px 16px #f0b7c0, inset -8px -8px 16px #ffffff, 0 0 0 2px #ff5c7a;
+}
+
+.footnote {
+    text-align: center;
+    color: #98a0be;
+    font-size: .9rem;
+    margin-top: 6px;
+}
+
+.footnote .link {
+    font-weight: 800;
+    text-decoration: none;
+    color: #6b7195;
+}
+
+.footnote .link:hover {
+    color: #41486a;
+}
+
+.success {
+    display: none;
+    text-align: center;
+    padding: 18px 4px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all .25s ease;
+}
+
+.success.show {
+    display: block;
+    opacity: 1;
+    transform: none;
+}
+
+.neu-ring {
+    width: 72px;
+    height: 72px;
+    margin: 6px auto 10px;
+    border-radius: 50%;
+    background: var(--card);
+    display: grid;
+    place-items: center;
+    color: #26be92;
+    box-shadow: 10px 10px 26px var(--shadow-dark), -10px -10px 26px var(--shadow-light),
+        inset 0 0 0 var(--shadow-dark), inset 0 0 0 var(--shadow-light);
+}
+
+.neu-ring svg {
+    width: 38px;
+    height: 38px;
+}
+
+.success h3 {
+    font-size: 1.25rem;
+    margin-bottom: 4px;
+}
+
+.success p {
+    color: #92a0bf;
+    font-size: .92rem;
+}
+
+/* Password popover */
+.pw-popover {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 8px;
+    z-index: 10;
+    background: var(--card);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 12px 12px;
+    min-width: 260px;
+    box-shadow: 12px 12px 26px var(--shadow-dark), -12px -12px 26px var(--shadow-light);
+    display: none;
+}
+
+.pw-popover.show {
+    display: block;
+}
+
+.pw-popover .arrow {
+    position: absolute;
+    top: -8px;
+    left: 24px;
+    width: 16px;
+    height: 16px;
+    background: var(--card);
+    transform: rotate(45deg);
+    box-shadow: -6px -6px 14px var(--shadow-light);
+}
+
+.pw-title {
+    font-weight: 800;
+    font-size: .9rem;
+    margin-bottom: 8px;
+    color: #4a5174;
+}
+
+.pw-reqs {
+    list-style: none;
+    display: grid;
+    gap: 6px;
+}
+
+.pw-reqs li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .88rem;
+    color: #6b7195;
+}
+
+.pw-reqs li .icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-block;
+    background: #d1d5db;
+    position: relative;
+}
+
+.pw-reqs li.ok .icon {
+    background: #dcfce7;
+}
+
+.pw-reqs li.ok {
+    color: #167647;
+}
+
+.pw-reqs li.bad .icon {
+    background: #fee2e2;
+}
+
+.pw-reqs li.bad {
+    color: #a11b27;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .signin-card {
+        width: 94vw;
+        padding: 22px 18px;
+        border-radius: 20px;
+    }
+
+    .brand h1 {
+        font-size: 1.45rem;
+    }
+
+    .input {
+        height: 46px;
+    }
+}

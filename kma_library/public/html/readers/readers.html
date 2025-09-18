@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Thống độc giả</title>
+
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+  <!-- CSS chung -->
+  <link rel="stylesheet" href="../../css/00_variables.css">
+  <link rel="stylesheet" href="../../css/01_reset.css">
+  <link rel="stylesheet" href="../../css/02_layout.css">
+  <link rel="stylesheet" href="../../css/03_header.css">
+  <link rel="stylesheet" href="../../css/04_components.css">
+  <link rel="stylesheet" href="../../css/05_table_actions.css">
+  <link rel="stylesheet" href="../../css/06_modal.css">
+  <link rel="stylesheet" href="../../css/07_responsive.css">
+
+  <!-- CSS riêng -->
+  <link rel="stylesheet" href="../../css/statistical/readers.css">
+</head>
+<body>
+  <main id="section-readers" class="content">
+    <div class="page-head">
+      <h1>Thống độc giả</h1>
+      <div class="page-controls">
+        <button id="btn-refresh" title="Refresh"><i class='bx bx-refresh'></i></button>
+        <button id="btn-print" title="Print"><i class='bx bx-printer'></i></button>
+        <div class="export">
+          <button id="btn-export" aria-haspopup="menu"><i class='bx bx-export'></i> Export <i class='bx bx-chevron-down'></i></button>
+          <div class="export-menu" id="export-menu" aria-hidden="true" style="display:none">
+            <button data-type="csv">Export CSV</button>
+            <button data-type="json">Export JSON</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lưới 7 thẻ -->
+    <section class="readers-cards-grid">
+      <div class="reader-card card-tall gradient-blue">
+        <div class="icon"><i class='bx bxs-user-detail'></i></div>
+        <div class="value" id="card-total-readers">0</div>
+        <div class="label">Tổng độc giả</div>
+        <div class="splash"></div>
+      </div>
+
+      <div class="reader-card gradient-indigo">
+        <div class="icon"><i class='bx bx-male-sign'></i></div>
+        <div class="value" id="card-male">0</div>
+        <div class="label">Tổng Nam</div>
+        <div class="splash"></div>
+      </div>
+      <div class="reader-card gradient-indigo-light">
+        <div class="icon"><i class='bx bx-female-sign'></i></div>
+        <div class="value" id="card-female">0</div>
+        <div class="label">Tổng Nữ</div>
+        <div class="splash"></div>
+      </div>
+
+      <div class="reader-card gradient-green">
+        <div class="icon"><i class='bx bxs-graduation'></i></div>
+        <div class="value" id="card-sinhvien">0</div>
+        <div class="label">Tổng Sinh viên</div>
+        <div class="splash"></div>
+      </div>
+      <div class="reader-card gradient-green-light">
+        <div class="icon"><i class='bx bx-book-reader'></i></div>
+        <div class="value" id="card-hocvien">0</div>
+        <div class="label">Tổng Học viên</div>
+        <div class="splash"></div>
+      </div>
+
+      <div class="reader-card gradient-rose">
+        <div class="icon"><i class='bx bx-home-circle'></i></div>
+        <div class="value" id="card-dansu">0</div>
+        <div class="label">Tổng Dân sự</div>
+        <div class="splash"></div>
+      </div>
+      <div class="reader-card gradient-rose-light">
+        <div class="icon"><i class='bx bx-globe'></i></div>
+        <div class="value" id="card-quocte">0</div>
+        <div class="label">Tổng Quốc tế</div>
+        <div class="splash"></div>
+      </div>
+    </section>
+
+    <!-- Bảng độc giả -->
+    <section class="card" id="section-readers-table">
+      <div class="card-header">
+        <h2>Danh sách độc giả</h2>
+        <div class="card-controls">
+          <label class="rows-per-page">
+            Row Per Page
+            <select id="select-page-size">
+              <option value="10" selected>10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+
+          <!-- Nút Filter đặt giữa Row Per Page và ô tìm kiếm -->
+          <div class="filter">
+            <button id="btn-filter" aria-haspopup="dialog" aria-expanded="false">
+              <i class='bx bx-filter-alt'></i> Filter <i class='bx bx-chevron-down'></i>
+            </button>
+            <div id="filter-panel" class="filter-panel" role="dialog" aria-labelledby="filter-title" aria-hidden="true" style="display:none">
+              <div class="filter-title" id="filter-title">Filter</div>
+              <div class="filter-grid">
+                <label class="filter-field">
+                  <span>Lớp</span>
+                  <select id="filter-lop">
+                    <option value="">Tất cả</option>
+                  </select>
+                </label>
+                <label class="filter-field">
+                  <span>Giới tính</span>
+                  <select id="filter-gt">
+                    <option value="">Tất cả</option>
+                    <option value="nam">Nam</option>
+                    <option value="nu">Nữ</option>
+                  </select>
+                </label>
+                <label class="filter-field">
+                  <span>Chức vụ</span>
+                  <select id="filter-cv">
+                    <option value="">Tất cả</option>
+                    <option value="sinh vien">Sinh viên</option>
+                    <option value="hoc vien">Học viên</option>
+                  </select>
+                </label>
+                <label class="filter-field">
+                  <span>Hệ</span>
+                  <select id="filter-he">
+                    <option value="">Tất cả</option>
+                    <option value="dan su">Dân sự</option>
+                    <option value="quoc te">Quốc tế</option>
+                  </select>
+                </label>
+              </div>
+              <div class="filter-actions">
+                <button type="button" class="btn-secondary" id="btn-filter-reset">Reset</button>
+                <button type="button" class="btn-primary" id="btn-filter-apply">Apply</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-search">
+            <input id="table-search" placeholder="Tìm trong bảng..." type="search" />
+          </div>
+        </div>
+      </div>
+      <div class="card-body" style="overflow-x:auto;">
+        <table id="readers-table" class="table" style="min-width: 1024px;">
+          <thead>
+            <tr id="readers-thead-row"></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div id="table-empty" class="muted" hidden>Không có dữ liệu.</div>
+        <div class="card-footer">
+          <div id="table-info" class="table-info"></div>
+          <div id="pagination" class="pagination"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- API Thông tin thẻ -->
+  <script src="../../js/cardregister_js/cardregister_api.js"></script>
+  <!-- JS riêng -->
+  <script src="../../js/readers_js/readers.js"></script>
+</body>
+</html>
