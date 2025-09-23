@@ -5,7 +5,7 @@ window.LibrariansListModule = (function(){
   const API_LIST=`${BASE}/library_api/functions/function_books/command/accounts/Librarians_list.php`;
   const API_CRUD=`${BASE}/library_api/functions/function_books/command/accounts/Librarians_crud.php`;
 
-  let state={page:1,limit:10,q:'',role:'Librarian',sort_by:'UserID',sort_dir:'DESC'};
+  let state={page:1,limit:20,q:'',role:'',sort_by:'UserID',sort_dir:'DESC'};
 
   // Utils
   const $=(s,r=document)=>r.querySelector(s);
@@ -253,23 +253,10 @@ window.LibrariansListModule = (function(){
     return `<label class="frow"><span>${label}</span><input id="${id}" type="${type}" placeholder="${ph}" value="${esc(val)}"/></label>`;
   }
   function selectRow(label,id,value='Librarian'){
-    return `<label class="frow"><span>${label}</span>
-      <select id="${id}">
-        <option value="Librarian"${value==='Librarian'?' selected':''}>Librarian</option>
-        <option value="Admin"${value==='Admin'?' selected':''}>Admin</option>
-      </select>
-    </label>`;
-  }
-  // Defensive: remove disallowed roles (e.g., 'Staff') if they appear due to cache/legacy data
-  function pruneRoleOptions(sel){
-    try{
-      const el = typeof sel === 'string' ? document.getElementById(sel) : sel;
-      if(!el) return;
-      const disallowed = new Set(['Staff','staff']);
-      el.querySelectorAll('option').forEach(o=>{ if(disallowed.has(String(o.value))) o.remove(); });
-      // ensure value is allowed
-      if (!['Librarian','Admin'].includes(el.value)) el.value = 'Librarian';
-    }catch{}
+    // SỬA Ở ĐÂY: Thêm 'Reader' vào danh sách và sắp xếp lại cho hợp lý
+    const roles = ['Librarian', 'Admin', 'Reader'];
+    const options = roles.map(r => `<option value="${r}"${value === r ? ' selected' : ''}>${r}</option>`).join('');
+    return `<label class="frow"><span>${label}</span><select id="${id}">${options}</select></label>`;
   }
   const getVal=id=>(document.getElementById(id)?.value||'').trim();
 
@@ -381,9 +368,6 @@ window.LibrariansListModule = (function(){
       toast('Đã tạo thủ thư','ok'); close(); load();
     }, 'Create');
 
-    // prune any unexpected 'Staff' option
-    pruneRoleOptions('f-role');
-
     const emailCtl = attachEmailValidation('f-email');
     attachPasswordPopup(document.getElementById('f-pass'));
   }
@@ -415,7 +399,6 @@ window.LibrariansListModule = (function(){
 
     attachPasswordPopup(document.getElementById('f-pass'));
     attachEmailValidation('f-email');
-    pruneRoleOptions('f-role');
   }
 
   function openResetModal(id,tr){
