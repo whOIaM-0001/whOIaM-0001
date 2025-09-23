@@ -55,7 +55,8 @@ function body_json(): array {
 }
 
 function validate_role(string $role): bool {
-  return in_array($role, ['Admin','Librarian'], true);
+  // SỬA Ở ĐÂY: Thay 'Staff' bằng 'Reader'
+  return in_array($role, ['Admin','Librarian','Reader'], true);
 }
 
 // Regex rules
@@ -104,6 +105,9 @@ function validate_input(array $in, bool $isCreate = true): array {
 }
 
 try {
+  // The rest of the file remains the same...
+  // (No changes needed in GET, POST, PUT, DELETE handlers as they use validate_role)
+  // ...
   // Kiểm tra email tồn tại
   if ($method === 'GET' && $action === 'check_email') {
     $email = trim((string)($_GET['email'] ?? ''));
@@ -229,5 +233,5 @@ try {
 
 } catch (Throwable $e) {
   http_response_code(500);
-  echo json_encode(['ok'=>false,'error'=>'Server error'], JSON_UNESCAPED_UNICODE);
+  echo json_encode(['ok'=>false,'error'=>'Server error: ' . $e->getMessage()], JSON_UNESCAPED_UNICODE);
 }
