@@ -22,12 +22,6 @@ if (empty($_SESSION['user'])) {
 
 /**
  * Cho phép override config bằng file library_api/config.php
- * Ví dụ:
- * <?php
- *   define('DB_HOST','127.0.0.1');
- *   define('DB_NAME','kma_library');
- *   define('DB_USER','root');
- *   define('DB_PASS','');
  */
 $rootConfig = dirname(__DIR__, 5) . DIRECTORY_SEPARATOR . 'config.php';
 if (is_file($rootConfig)) { require_once $rootConfig; }
@@ -53,7 +47,8 @@ function pstr(string $k, string $def=''): string { return isset($_GET[$k]) ? tri
 function pint(string $k, int $def=1): int { $v = isset($_GET[$k]) ? (int)$_GET[$k] : $def; return $v > 0 ? $v : $def; }
 
 $q        = pstr('q', '');
-$role     = pstr('role', 'Librarian'); // mặc định lọc Librarian
+// SỬA Ở ĐÂY: Bỏ mặc định 'Librarian', để mặc định là '' (tất cả)
+$role     = pstr('role', ''); 
 $page     = pint('page', 1);
 $limit    = pint('limit', 20);
 $limit    = max(1, min(100, $limit));
