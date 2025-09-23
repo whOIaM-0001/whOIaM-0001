@@ -1,0 +1,32 @@
+{
+  "root": "kma_library",
+  "files": [
+    "manager\\js\\book_mg.js",
+    "public\\html\\index.html",
+    "library_api\\api\\config\\test_connection.php",
+    "library_api\\api\\config\\db.php",
+    "library_api\\api\\config\\config.php",
+    "public\\js\\books_js\\book_ui.js",
+    "public\\js\\dashboard\\admin_ui.js",
+    "public\\js\\books_js\\notifications_book.js",
+    "public\\js\\books_js\\book_api.js",
+    "public\\css\\09_layout_admin.css",
+    "public\\css\\08_notifications_book.css",
+    "public\\css\\07_responsive.css",
+    "public\\css\\06_modal.css",
+    "public\\css\\05_table_actions.css",
+    "public\\css\\04_components.css",
+    "public\\css\\03_header.css",
+    "public\\css\\02_layout.css",
+    "public\\css\\01_reset.css",
+    "public\\css\\00_variables.css",
+    "library_api\\functions\\function_books\\command\\books\\book_manage\\books_update.php",
+    "library_api\\functions\\function_books\\command\\books\\book_manage\\books_delete.php",
+    "library_api\\functions\\function_books\\command\\books\\book_manage\\books_create.php",
+    "library_api\\functions\\function_books\\command\\books\\books_database\\publishers.php",
+    "library_api\\functions\\function_books\\command\\books\\books_database\\categories.php",
+    "library_api\\functions\\function_books\\command\\books\\books_database\\books_table.php",
+    "library_api\\functions\\function_books\\command\\books\\books_database\\books_read.php",
+    "library_api\\functions\\function_books\\command\\books\\books_database\\books.php"
+  ]
+}
