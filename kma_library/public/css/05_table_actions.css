@@ -1,0 +1,110 @@
+/* table + action menu (3-chấm) */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.table thead th {
+  background: #fafbfc;
+  color: #667085;
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #f1f5f9;
+  font-weight: 600;
+}
+
+.table tbody td {
+  padding: 12px;
+  border-bottom: 1px solid #f3f6f9;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: none;
+  word-break: break-word;
+}
+
+.table tbody tr:hover {
+  background: #fbfcfe;
+}
+
+/* action three-dots */
+.row-actions {
+  position: relative;
+}
+
+.action-btn {
+  position: relative;
+  z-index: 2100;
+  background: transparent;
+  border: 0;
+  padding: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.action-btn:hover {
+  background: #f8fafc;
+  border-radius: 6px;
+}
+
+.action-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 8px;
+  min-width: 140px;
+  background: var(--card);
+  border: 1px solid #eef2f6;
+  border-radius: 8px;
+  box-shadow: var(--shadow-2);
+  display: none;
+  z-index: 2200;
+  pointer-events: auto;
+}
+
+.action-menu.show,
+.action-menu[aria-hidden="false"] {
+  display: block;
+}
+
+.action-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.action-menu button:hover {
+  background: #f1f5f9;
+}
+
+.action-menu {
+  min-width: 160px;
+  width: 160px;
+  max-width: 220px;
+  border-radius: 8px;
+  padding: 6px 0;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, .08);
+  background: #fff;
+  overflow: visible;
+}
+
+.action-menu button {
+  padding: 10px 16px;
+  font-size: 14px;
+}
+
+@media (max-width:420px) {
+  .action-menu {
+    width: 140px;
+    min-width: 140px;
+  }
+
+  .action-menu button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}

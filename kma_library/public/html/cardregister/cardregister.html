@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Thông tin thẻ</title>
+
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/298979181c.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="../../css/00_variables.css">
+  <link rel="stylesheet" href="../../css/01_reset.css">
+  <link rel="stylesheet" href="../../css/02_layout.css">
+  <link rel="stylesheet" href="../../css/03_header.css">
+  <link rel="stylesheet" href="../../css/04_components.css">
+  <link rel="stylesheet" href="../../css/05_table_actions.css">
+  <link rel="stylesheet" href="../../css/06_modal.css">
+  <link rel="stylesheet" href="../../css/07_responsive.css">
+  <link rel="stylesheet" href="../../css/08_notifications_book.css">
+</head>
+<body>
+  <main class="content">
+    <div class="page-head">
+      <h1>Thông tin thẻ</h1>
+      <div class="page-controls">
+        <button id="btn-refresh" title="Refresh"><i class='bx bx-refresh'></i></button>
+        <button id="btn-print" title="Print"><i class='bx bx-printer'></i></button>
+        <div class="export">
+          <button id="btn-export"><i class='bx bx-export'></i> Export <i class='bx bx-chevron-down'></i></button>
+          <div class="export-menu" id="export-menu" aria-hidden="true">
+            <button data-type="csv">Export CSV</button>
+            <button data-type="json">Export JSON</button>
+          </div>
+        </div>
+        <button id="btn-add-card" class="primary">Đăng ký thẻ</button>
+      </div>
+    </div>
+
+    <section class="card" id="section-cardregister">
+      <div class="card-header">
+        <h2>Thông tin thẻ</h2>
+        <div class="card-controls">
+          <label class="rows-per-page">
+            Row Per Page
+            <select id="select-page-size">
+              <option value="10" selected>10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+          <div class="table-search">
+            <input id="table-search" placeholder="Search table..." type="search" />
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table id="cards-table" class="table">
+          <thead>
+            <tr>
+              <th data-col="maSVHV"><span class="th-sort">Mã SV/HV <span class="caret">▾</span></span></th>
+              <th data-col="hoTen"><span class="th-sort">Họ tên <span class="caret">▾</span></span></th>
+              <th data-col="gmail"><span class="th-sort">Email <span class="caret">▾</span></span></th>
+              <th data-col="ngaySinh"><span class="th-sort">Ngày sinh <span class="caret">▾</span></span></th>
+              <th data-col="sdt"><span class="th-sort">SĐT <span class="caret">▾</span></span></th>
+              <th data-col="lop"><span class="th-sort">Lớp <span class="caret">▾</span></span></th>
+              <th data-col="gioiTinh"><span class="th-sort">Giới tính <span class="caret">▾</span></span></th>
+              <th data-col="chucVu"><span class="th-sort">Chức vụ <span class="caret">▾</span></span></th>
+              <th data-col="he"><span class="th-sort">Hệ <span class="caret">▾</span></span></th>
+              <th data-col="ngayLamThe"><span class="th-sort">Ngày làm thẻ <span class="caret">▾</span></span></th>
+              <th data-col="ngayHetHanThe"><span class="th-sort">Ngày hết hạn <span class="caret">▾</span></span></th>
+              <th data-col="Action"><span class="th-sort">Thao tác <span class="caret">▾</span></span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div id="table-empty" class="muted" hidden>Không có dữ liệu.</div>
+        <div class="card-footer">
+          <div id="table-info" class="table-info"></div>
+          <div id="pagination" class="pagination"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal: Đăng ký / Sửa thông tin thẻ -->
+  <div id="modal-card" class="modal" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title-card">
+      <button id="modal-close-card" class="modal-close" aria-label="Close">&times;</button>
+      <h3 id="modal-title-card">Đăng ký thẻ</h3>
+      <form id="modal-form-card" novalidate>
+        <div class="modal-grid">
+          <div class="form-field">
+            <label for="maSVHV">Mã SV/HV <span class="req">*</span></label>
+            <input id="maSVHV" name="maSVHV" type="text" required />
+          </div>
+          <div class="form-field">
+            <label for="hoTen">Họ tên <span class="req">*</span></label>
+            <input id="hoTen" name="hoTen" type="text" required />
+          </div>
+
+          <div class="form-field">
+            <label for="gmail">Email</label>
+            <input id="gmail" name="gmail" type="email" placeholder="username@gmail.com" />
+          </div>
+          <div class="form-field">
+            <label for="ngaySinh">Ngày sinh</label>
+            <input id="ngaySinh" name="ngaySinh" type="date" />
+          </div>
+
+          <div class="form-field">
+            <label for="sdt">Số điện thoại</label>
+            <input id="sdt" name="sdt" type="tel" inputmode="tel" placeholder="0912345678" />
+          </div>
+          <div class="form-field">
+            <label for="lop">Lớp</label>
+            <input id="lop" name="lop" type="text" />
+          </div>
+
+          <div class="form-field">
+            <label for="gioiTinh">Giới tính <span class="req">*</span></label>
+            <select id="gioiTinh" name="gioiTinh" required>
+              <option value="">-- Chọn --</option>
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="chucVu">Chức vụ <span class="req">*</span></label>
+            <select id="chucVu" name="chucVu" required>
+              <option value="">-- Chọn --</option>
+              <option value="Sinh viên">Sinh viên</option>
+              <option value="Học viên">Học viên</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="he">Hệ <span class="req">*</span></label>
+            <select id="he" name="he" required>
+              <option value="">-- Chọn --</option>
+              <option value="Dân sự">Dân sự</option>
+              <option value="Quốc tế">Quốc tế</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="ngayLamThe">Ngày làm thẻ <span class="req">*</span></label>
+            <input id="ngayLamThe" name="ngayLamThe" type="date" required />
+          </div>
+
+          <div class="form-field">
+            <label for="ngayHetHanThe">Ngày hết hạn <span class="req">*</span></label>
+            <input id="ngayHetHanThe" name="ngayHetHanThe" type="date" required />
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="modal-cancel-card" type="button">Hủy</button>
+          <button id="modal-save-card" class="primary" type="submit">Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notifications + Module scripts -->
+  <script src="../../js/cardregister_js/notifications_cardregister.js"></script>
+  <script src="../../js/cardregister_js/cardregister_api.js"></script>
+  <script src="../../js/cardregister_js/cardregister_ui.js"></script>
+</body>
+</html>

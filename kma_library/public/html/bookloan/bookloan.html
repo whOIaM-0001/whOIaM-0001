@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lập phiếu mượn</title>
+
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/298979181c.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="../../css/00_variables.css">
+  <link rel="stylesheet" href="../../css/01_reset.css">
+  <link rel="stylesheet" href="../../css/02_layout.css">
+  <link rel="stylesheet" href="../../css/03_header.css">
+  <link rel="stylesheet" href="../../css/04_components.css">
+  <link rel="stylesheet" href="../../css/05_table_actions.css">
+  <link rel="stylesheet" href="../../css/06_modal.css">
+  <link rel="stylesheet" href="../../css/07_responsive.css">
+  <link rel="stylesheet" href="../../css/08_notifications_book.css">
+</head>
+<body>
+  <main class="content">
+    <div class="page-head">
+      <h1>Lập phiếu mượn</h1>
+      <div class="page-controls">
+        <button id="btn-refresh" title="Refresh"><i class='bx bx-refresh'></i></button>
+        <button id="btn-print" title="Print"><i class='bx bx-printer'></i></button>
+        <div class="export">
+          <button id="btn-export"><i class='bx bx-export'></i> Export <i class='bx bx-chevron-down'></i></button>
+          <div class="export-menu" id="export-menu" aria-hidden="true">
+            <button data-type="csv">Export CSV</button>
+            <button data-type="json">Export JSON</button>
+          </div>
+        </div>
+        <button id="btn-add-loan" class="primary">Lập phiếu mượn</button>
+      </div>
+    </div>
+
+    <section class="card" id="section-bookloan">
+      <div class="card-header">
+        <h2>Danh sách phiếu mượn</h2>
+        <div class="card-controls">
+          <label class="rows-per-page">
+            Row Per Page
+            <select id="select-page-size">
+              <option value="10" selected>10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+          <div class="table-search">
+            <input id="table-search" placeholder="Search table..." type="search" />
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table id="bookloan-table" class="table">
+          <thead>
+            <tr>
+              <th data-col="MaPhieuMuon"><span class="th-sort">Mã phiếu <span class="caret">▾</span></span></th>
+              <th data-col="MaSach"><span class="th-sort">Mã sách <span class="caret">▾</span></span></th>
+              <th data-col="MaBanDoc"><span class="th-sort">Mã bạn đọc <span class="caret">▾</span></span></th>
+              <th data-col="SoLuongMuon"><span class="th-sort">SL mượn <span class="caret">▾</span></span></th>
+              <th data-col="NgayMuon"><span class="th-sort">Ngày mượn <span class="caret">▾</span></span></th>
+              <th data-col="NgayTra"><span class="th-sort">Hẹn trả <span class="caret">▾</span></span></th>
+              <th data-col="TinhTrang"><span class="th-sort">Tình trạng <span class="caret">▾</span></span></th>
+              <th data-col="NgayQuaHan"><span class="th-sort">Ngày quá hạn <span class="caret">▾</span></span></th>
+              <th data-col="Action"><span class="th-sort">Thao tác <span class="caret">▾</span></span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div id="table-empty" class="muted" hidden>Không có dữ liệu.</div>
+        <div class="card-footer">
+          <div id="table-info" class="table-info"></div>
+          <div id="pagination" class="pagination"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal-loan" class="modal" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title-loan">
+      <button id="modal-close-loan" class="modal-close" aria-label="Close">&times;</button>
+      <h3 id="modal-title-loan">Lập phiếu mượn</h3>
+
+      <form id="modal-form-loan" novalidate>
+        <div class="modal-grid" style="grid-template-columns: 1fr minmax(380px, 520px); align-items: start; gap: 16px;">
+          <div>
+            <div class="form-field">
+              <label for="MaPhieuMuon">Mã phiếu mượn <span class="req">*</span></label>
+              <input id="MaPhieuMuon" name="MaPhieuMuon" type="text" required />
+            </div>
+
+            <div class="form-field">
+              <label for="MaSach">Mã sách <span class="req">*</span></label>
+              <input id="MaSach" name="MaSach" type="text" placeholder="Chọn từ bảng bên phải hoặc nhập mã" required />
+            </div>
+
+            <div class="form-field">
+              <label for="MaBanDoc">Mã bạn đọc <span class="req">*</span></label>
+              <input id="MaBanDoc" name="MaBanDoc" type="text" placeholder="Mã SV/HV trong Thông tin thẻ" required />
+            </div>
+
+            <div class="form-field">
+              <label for="SoLuongMuon">Số lượng mượn (tối đa 5)</label>
+              <input id="SoLuongMuon" name="SoLuongMuon" type="number" min="1" max="5" value="1" />
+            </div>
+
+            <div class="form-field">
+              <label for="NgayMuon">Ngày mượn <span class="req">*</span></label>
+              <input id="NgayMuon" name="NgayMuon" type="date" required />
+            </div>
+
+            <div class="form-field">
+              <label for="NgayTra">Ngày hẹn trả <span class="req">*</span></label>
+              <input id="NgayTra" name="NgayTra" type="date" required />
+            </div>
+
+            <div class="form-field">
+              <!-- Sửa lỗi a11y: liên kết label với input -->
+              <label for="TinhTrangPreview">Tình trạng (tự tính)</label>
+              <input id="TinhTrangPreview" type="text" readonly placeholder="Sẽ tự tính theo Ngày hẹn trả" />
+            </div>
+          </div>
+
+          <!-- Picker -->
+          <div class="card" style="margin:0;">
+            <div class="card-header" style="display:flex; align-items:center; justify-content:space-between;">
+              <h4 style="margin:0;">Danh sách sách</h4>
+              <div class="table-search" style="margin-left:12px; flex:1; display:flex; justify-content:flex-end;">
+                <input id="book-search" placeholder="Tìm mã/tên sách..." type="search" style="max-width: 240px;" />
+              </div>
+            </div>
+            <!-- Cho phép scroll ngang khi tên dài -->
+            <div class="card-body" style="padding-top:8px; overflow-x:auto;">
+              <table id="books-pick-table" class="table" style="min-width: 680px;">
+                <thead>
+                  <tr>
+                    <th data-col="maS"><span class="th-sort">Mã sách <span class="caret">▾</span></span></th>
+                    <th data-col="TenS"><span class="th-sort">Tên sách <span class="caret">▾</span></span></th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <div class="muted" id="books-pick-empty" hidden>Không có dữ liệu sách</div>
+            </div>
+            <div class="card-footer" style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+              <small class="muted">Chọn 1 dòng để điền Mã sách</small>
+              <div id="books-pick-pagination" class="pagination"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button id="modal-cancel-loan" type="button">Hủy</button>
+          <button id="modal-save-loan" class="primary" type="submit">Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notifications + API + UI -->
+  <script src="../../js/bookloan_js/notifications_bookloan.js"></script>
+  <script src="../../js/books_js/book_api.js"></script>
+  <script src="../../js/cardregister_js/cardregister_api.js"></script>
+
+  <script src="../../js/bookloan_js/bookloan_api.js"></script>
+  <script src="../../js/bookloan_js/bookloan_ui.js"></script>
+</body>
+</html>

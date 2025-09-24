@@ -1,0 +1,151 @@
+/* cards, page head, buttons */
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-bottom:14px;  */
+}
+
+.page-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+button {
+  border: 1px solid #e6eefc;
+  background: #fff;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button.primary {
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 10px;
+  padding: 0;
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.card-body {
+  padding: 12px 18px;
+  overflow: auto;
+}
+
+.table {
+  table-layout: auto;
+  min-width: 900px;
+}
+
+/* cho phép nội dung mở rộng */
+
+.muted {
+  color: var(--muted);
+  padding: 12px;
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 18px;
+  padding-left: 8px;
+}
+
+.card-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.rows-per-page select {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #e6eefc;
+  background: #fff;
+}
+
+.table-search input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e6eefc;
+  min-width: 180px;
+}
+
+/* pagination */
+.pagination {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.pagination button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #e6eefc;
+  background: #fff;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+}
+
+.table-info {
+  color: var(--muted);
+  font-size: 13px;
+  margin-right: 8px;
+}
+
+/* sort caret */
+.th-sort {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.th-sort .caret {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.th-sort.sorted-asc .caret {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+#btn-refresh.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+#btn-refresh.loading .bx {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

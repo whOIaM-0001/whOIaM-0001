@@ -1,0 +1,176 @@
+/* ===== notifications: toast + result modal (card) ===== */
+#ui-notify-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 120000;
+}
+
+/* Toasts (góc phải trên) */
+.ui-toast-container {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+  z-index: 120010;
+}
+
+.ui-toast {
+  pointer-events: auto;
+  min-width: 240px;
+  max-width: 360px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(2, 6, 23, .12);
+  display: flex;
+  gap: 12px;
+  align-items: start;
+  font-size: 14px;
+  box-sizing: border-box;
+  transform-origin: 100% 0;
+  animation: ui-toast-in .18s ease;
+  border-left: 6px solid transparent;
+}
+
+.ui-toast .icon {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.ui-toast .body {
+  flex: 1;
+}
+
+.ui-toast .title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.ui-toast.success {
+  border-left-color: #16a34a;
+}
+
+.ui-toast.error {
+  border-left-color: #ef4444;
+}
+
+.ui-toast.success .icon {
+  background: rgba(22, 163, 74, .12);
+  color: #15803d;
+}
+
+.ui-toast.error .icon {
+  background: rgba(239, 68, 68, .08);
+  color: #c0262e;
+}
+
+@keyframes ui-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(8px) scale(.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes ui-toast-out {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(8px) scale(.98);
+  }
+}
+
+/* Result modal (center card) */
+.ui-result-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, .45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 120020;
+  pointer-events: auto;
+}
+
+.ui-result-card {
+  width: min(540px, 92vw);
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 20px 50px rgba(2, 6, 23, .2);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.ui-result-card .big-icon {
+  width: 86px;
+  height: 86px;
+  border-radius: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.ui-result-card.success .big-icon {
+  background: rgba(59, 130, 246, .08);
+  color: #0ea5e9;
+}
+
+.ui-result-card.error .big-icon {
+  background: rgba(239, 68, 68, .08);
+  color: #ef4444;
+}
+
+.ui-result-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+}
+
+.ui-result-card p {
+  margin: 0 0 18px 0;
+  color: #475569;
+}
+
+.ui-result-card .btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.ui-result-card .btns button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 0;
+  cursor: pointer;
+}
+
+.ui-result-card .btn-primary {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.ui-result-card .btn-ghost {
+  background: transparent;
+  color: #334155;
+  border: 1px solid #e6eefc;
+}

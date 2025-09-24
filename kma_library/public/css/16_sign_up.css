@@ -1,0 +1,451 @@
+/* Sign Up — scoped, KHÔNG phụ thuộc body.auth-signup (nhưng vẫn hỗ trợ nếu có) */
+
+/* Biến + nền chỉ áp dụng nếu có 1 trong các container sau;
+   nếu không có, các thành phần bên trong .signin-card vẫn có fallback màu. */
+:where(body.auth-signup, .auth-signup, .signin-page) {
+    --bg: #e9eef6;
+    --card: #e9eef6;
+    --shadow-dark: #c7cfdf;
+    --shadow-light: #ffffff;
+    --text: #3f4668;
+    --muted: #8d95b3;
+    --ring: #d7deee;
+    --ok: #22c55e;
+    --bad: #ef4444;
+
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(1200px 400px at 50% -40%, rgba(255, 255, 255, .9), transparent),
+        var(--bg);
+}
+
+/* Glow trang */
+:where(body.auth-signup, .auth-signup, .signin-page) .page-glow {
+    position: fixed;
+    inset: -40% -20% auto -20%;
+    height: 50vh;
+    background: radial-gradient(500px 200px at 50% 0, rgba(255, 255, 255, .9), transparent);
+    filter: blur(30px);
+    opacity: .8;
+    pointer-events: none;
+}
+
+/* Wrapper trung tâm */
+.signin-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    box-sizing: border-box;
+}
+
+/* Card */
+.signin-card {
+    width: 420px;
+    max-width: 100%;
+    background: var(--card, #e9eef6);
+    border-radius: 24px;
+    padding: 28px 28px 22px;
+    box-shadow: 18px 18px 44px var(--shadow-dark, #c7cfdf),
+        -18px -18px 44px var(--shadow-light, #ffffff);
+    position: relative;
+    box-sizing: border-box;
+}
+
+.signin-card .brand {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.signin-card .brand h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: .2px;
+    color: #2f3556;
+}
+
+.signin-card .brand-logo {
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    margin-inline: auto;
+    margin-bottom: 14px;
+    display: grid;
+    place-items: center;
+    background: var(--card, #e9eef6);
+    box-shadow: 10px 10px 24px var(--shadow-dark, #c7cfdf),
+        -10px -10px 24px var(--shadow-light, #ffffff),
+        inset 0 0 0 var(--shadow-dark, #c7cfdf),
+        inset 0 0 0 var(--shadow-light, #ffffff);
+    overflow: hidden;
+}
+
+.signin-card .brand-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    display: block;
+}
+
+/* Form */
+.signin-card .form {
+    margin-top: 16px;
+}
+
+.signin-card .form-group {
+    margin-bottom: 16px;
+    position: relative;
+    padding-top: 8px;
+}
+
+/* Input */
+.signin-card .input {
+    position: relative;
+    background: var(--card, #e9eef6);
+    border-radius: 12px;
+    height: 48px;
+    box-shadow: inset 8px 8px 16px var(--shadow-dark, #c7cfdf),
+        inset -8px -8px 16px var(--shadow-light, #ffffff);
+    transition: box-shadow .2s ease, transform .2s ease;
+    overflow: visible;
+}
+
+.signin-card .input:focus-within {
+    box-shadow: inset 4px 4px 8px var(--shadow-dark, #c7cfdf),
+        inset -4px -4px 8px var(--shadow-light, #ffffff);
+}
+
+.signin-card .input input,
+.signin-card .input select {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    padding: 0 44px;
+    color: var(--text, #3f4668);
+    font-size: .96rem;
+    font-weight: 600;
+    appearance: none;
+    box-sizing: border-box;
+}
+
+.signin-card .input input::placeholder {
+    color: transparent;
+}
+
+/* Floating label: hỗ trợ input + autofill; với select dùng focus-within */
+.signin-card .input label {
+    position: absolute;
+    left: 44px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted, #8d95b3);
+    font-weight: 500;
+    pointer-events: none;
+    font-size: .96rem;
+    transition: all .18s ease;
+    z-index: 1;
+}
+
+.signin-card .input input:focus+label,
+.signin-card .input input:not(:placeholder-shown)+label,
+.signin-card .input input:-webkit-autofill+label,
+.signin-card .input input:-webkit-autofill:focus+label,
+.signin-card .input.focused label,
+.signin-card .input.has-value label,
+.signin-card .input:focus-within label {
+    top: -12px !important;
+    left: 44px !important;
+    transform: none !important;
+    font-size: .78rem !important;
+    line-height: 1.2 !important;
+    color: #6c7293 !important;
+    opacity: 1 !important;
+    background: var(--card, #e9eef6) !important;
+    padding: 0 6px !important;
+    border-radius: 6px !important;
+}
+
+/* Icons + toggle */
+.signin-card .leading-icon,
+.signin-card .trailing-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    color: #9aa2be;
+    display: grid;
+    place-items: center;
+}
+
+.signin-card .leading-icon {
+    left: 12px;
+}
+
+.signin-card .trailing-icon {
+    right: 12px;
+}
+
+.signin-card .toggle {
+    appearance: none;
+    border: 0;
+    background: var(--card, #e9eef6);
+    cursor: pointer;
+    border-radius: 10px;
+    width: 36px;
+    height: 36px;
+    box-shadow: 4px 4px 10px var(--shadow-dark, #c7cfdf),
+        -4px -4px 10px var(--shadow-light, #ffffff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signin-card .toggle .eye {
+    width: 18px;
+    height: 18px;
+}
+
+.signin-card .toggle .eye-closed {
+    display: none;
+}
+
+.signin-card .toggle.show .eye-open {
+    display: none;
+}
+
+.signin-card .toggle.show .eye-closed {
+    display: block;
+}
+
+/* Lỗi */
+.signin-card .error {
+    display: block;
+    min-height: 18px;
+    margin: 6px 4px 0 4px;
+    color: #e65376;
+    font-size: .8rem;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: all .18s ease;
+}
+
+.signin-card .form-group.invalid .error {
+    opacity: 1;
+    transform: none;
+}
+
+.signin-card .form-group.invalid .input {
+    box-shadow: inset 8px 8px 16px #f0b7c0, inset -8px -8px 16px #ffffff, 0 0 0 2px #ff5c7a;
+}
+
+/* Button trong card */
+.signin-card .btn {
+    width: 100%;
+    height: 50px;
+    border: 0;
+    cursor: pointer;
+    border-radius: 14px;
+    color: #303759;
+    font-weight: 700;
+    background: var(--card, #e9eef6);
+    box-shadow: 8px 8px 20px var(--shadow-dark, #c7cfdf),
+        -8px -8px 20px var(--shadow-light, #ffffff);
+    transition: transform .18s ease, box-shadow .18s ease, opacity .2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.signin-card .btn:hover {
+    transform: translateY(-1px);
+}
+
+.signin-card .btn:active {
+    transform: translateY(0);
+    box-shadow: inset 4px 4px 10px var(--shadow-dark, #c7cfdf),
+        inset -4px -4px 10px var(--shadow-light, #ffffff);
+}
+
+.signin-card .btn[disabled] {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.signin-card .btn .btn-text {
+    position: relative;
+    z-index: 2;
+}
+
+.signin-card .btn .btn-loader {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    transition: opacity .2s ease;
+}
+
+.signin-card .btn.loading .btn-text {
+    opacity: 0;
+}
+
+.signin-card .btn.loading .btn-loader {
+    opacity: 1;
+}
+
+/* Spinner riêng để tránh xung đột */
+.signin-card .spinner {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid var(--shadow-dark, #c7cfdf);
+    border-top-color: #727ba1;
+    animation: signup-spin 1s linear infinite;
+}
+
+@keyframes signup-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Footnote (liên kết Sign in) */
+.signin-card .footnote {
+    text-align: center;
+    color: #6b7195;
+    font-size: .95rem;
+    margin-top: 18px;
+}
+
+.signin-card .footnote .link {
+    font-weight: 800;
+    text-decoration: none;
+    color: #43507a;
+}
+
+.signin-card .footnote .link:hover {
+    color: #2f3b64;
+    text-decoration: underline;
+}
+
+/* Password popover */
+.signin-card .pw-popover {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 8px;
+    z-index: 10;
+    background: var(--card, #e9eef6);
+    color: var(--text, #3f4668);
+    border-radius: 12px;
+    padding: 12px 12px;
+    min-width: 260px;
+    box-shadow: 12px 12px 26px var(--shadow-dark, #c7cfdf), -12px -12px 26px var(--shadow-light, #ffffff);
+    display: none;
+}
+
+.signin-card .pw-popover.show {
+    display: block;
+}
+
+.signin-card .pw-popover .arrow {
+    position: absolute;
+    top: -8px;
+    left: 24px;
+    width: 16px;
+    height: 16px;
+    background: var(--card, #e9eef6);
+    transform: rotate(45deg);
+    box-shadow: -6px -6px 14px var(--shadow-light, #ffffff);
+}
+
+.signin-card .pw-title {
+    font-weight: 800;
+    font-size: .9rem;
+    margin-bottom: 8px;
+    color: #4a5174;
+}
+
+.signin-card .pw-reqs {
+    list-style: none;
+    display: grid;
+    gap: 6px;
+}
+
+.signin-card .pw-reqs li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .88rem;
+    color: #6b7195;
+}
+
+.signin-card .pw-reqs li .icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-block;
+    background: #d1d5db;
+    position: relative;
+}
+
+.signin-card .pw-reqs li.ok .icon {
+    background: #dcfce7;
+}
+
+.signin-card .pw-reqs li.ok {
+    color: #167647;
+}
+
+.signin-card .pw-reqs li.bad .icon {
+    background: #fee2e2;
+}
+
+.signin-card .pw-reqs li.bad {
+    color: #a11b27;
+}
+
+/* --- Append: robust hide/show cho khối success --- */
+[hidden] { display: none !important; }               /* đảm bảo thuộc tính hidden luôn ẩn */
+
+.signin-card .success {
+  display: none !important;                          /* ẩn mặc định */
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.signin-card .success.show {
+  display: block !important;                         /* chỉ hiện khi JS thêm .show */
+  height: auto;
+  padding: 18px 4px;
+  margin-top: 12px;
+  opacity: 1;
+  transform: none;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .signin-card {
+        width: 94vw;
+        padding: 22px 18px;
+        border-radius: 20px;
+    }
+
+    .signin-card .brand h1 {
+        font-size: 1.45rem;
+    }
+
+    .signin-card .input {
+        height: 46px;
+    }
+}
