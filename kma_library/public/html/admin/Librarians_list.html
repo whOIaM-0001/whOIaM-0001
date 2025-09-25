@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Danh sách thủ thư - KMA Library</title>
+  <base href="/kma_library/">
+  <link rel="stylesheet" href="../../css/03_header.css">
+  <link rel="stylesheet" href="public/css/admin/Librarians_list.css?v=20250923-02">
+</head>
+<body>
+  <main class="container">
+    <section class="toolbar" aria-label="Bộ lọc danh sách">
+      <div class="search">
+        <input id="q" type="search" placeholder="Tìm theo tên hoặc email..." aria-label="Search" />
+      </div>
+      <div class="filters">
+        <label>
+          Vai trò
+          <select id="role">
+            <option value="Librarian" selected>Librarian</option>
+            <option value="">Tất cả</option>
+            <option value="Admin">Admin</option>
+            <option value="Reader">Reader</option>
+          </select>
+        </label>
+        <label>
+          Mỗi trang
+          <select id="limit">
+            <option>10</option>
+            <option selected>20</option>
+            <option>50</option>
+          </select>
+        </label>
+        <button id="btnRefresh" class="btn">Làm mới</button>
+        <button id="btnAdd" class="btn primary">Thêm thủ thư</button>
+      </div>
+    </section>
+    <section class="table-wrap" aria-label="Danh sách thủ thư">
+      <table class="grid" id="grid">
+        <thead>
+          <tr>
+            <th style="width: 80px;">UserID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th style="width: 140px;">Role</th>
+            <th style="width: 160px;">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody id="gridBody">
+          <tr><td colspan="5" class="empty">Đang tải...</td></tr>
+        </tbody>
+      </table>
+      <div class="pager" id="pager" aria-label="Phân trang">
+        <button id="prevPage" class="btn" disabled>‹ Trước</button>
+        <span id="pageInfo">Trang 1/1</span>
+        <button id="nextPage" class="btn" disabled>Tiếp ›</button>
+      </div>
+    </section>
+  </main>
+  <script src="public/js/auth_guard.js" defer></script>
+  <script src="public/js/accounts_js/logout.js?v=20250924-01" defer></script>
+  <!-- Sửa ở đây: đổi version để phá cache -->
+  <script src="public/js/admin/Librarians_list.js?v=20250923-03" defer></script>
+</body>
+</html>
