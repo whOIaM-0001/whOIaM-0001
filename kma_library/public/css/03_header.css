@@ -1,0 +1,130 @@
+/* header, search, profile, export dropdown */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 18px;
+  border-bottom: 1px solid #ffffff;
+  background: transparent;
+  background:#ffffff
+}
+
+.searchbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #eef2f6;
+  min-width: 220px;
+}
+
+.searchbox input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  width: 220px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 100;
+}
+
+/* profile */
+.profile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+.profile:hover {
+  background: #f8fafc;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ensure profile menu style is applied even after moved to body */
+.profile-menu,
+#profile-menu,
+#profile-menu-root {
+  position: fixed;
+  top: auto;
+  right: auto;
+  background: #fff;
+  border: 1px solid #e6eef6;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, .08);
+  min-width: 160px;
+  max-width: 300px;
+  padding: 4px 0;
+  display: none;
+  z-index: 100000;
+  pointer-events: auto;
+}
+
+.profile-menu a,
+#profile-menu a,
+#profile-menu-root a,
+.profile-menu button,
+#profile-menu button,
+#profile-menu-root button {
+  display: block;
+  padding: 10px 14px;
+  text-decoration: none;
+  color: #0b1726;
+  background: transparent;
+  border: none;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+}
+
+.profile-menu a:hover,
+#profile-menu a:hover,
+.profile-menu button:hover {
+  background: #f5f7fb;
+}
+
+/* export menu */
+.export {
+  position: relative;
+}
+
+#export-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--card);
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: var(--shadow-2);
+  min-width: 140px;
+  display: none;
+  z-index: 1500;
+}
+
+#export-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* end of header profile/export styles */

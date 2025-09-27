@@ -1,0 +1,583 @@
+/* Sign In (scoped) — Không cần body.auth-signin; không ảnh hưởng trang khác */
+
+/* Cho phép bạn chọn 1 trong các container: body.auth-signin, .auth-signin, .signin-page
+   Nếu không có, phần nền trang có thể không áp dụng, nhưng thẻ .signin-card vẫn đẹp. */
+:where(body.auth-signin, .auth-signin, .signin-page) {
+    --bg: #e9eef6;
+    --card: #e9eef6;
+    --shadow-dark: #c7cfdf;
+    --shadow-light: #ffffff;
+    --text: #3f4668;
+    --muted: #8d95b3;
+    --accent: #5b6b91;
+    --ring: #d7deee;
+
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(1200px 400px at 50% -40%, rgba(255, 255, 255, .9), transparent),
+        var(--bg);
+}
+
+/* Glow trang — chỉ hiển thị nếu có trong DOM */
+:where(body.auth-signin, .auth-signin, .signin-page) .page-glow {
+    position: fixed;
+    inset: -40% -20% auto -20%;
+    height: 50vh;
+    background: radial-gradient(500px 200px at 50% 0, rgba(255, 255, 255, .9), transparent);
+    filter: blur(30px);
+    opacity: .8;
+    pointer-events: none;
+}
+
+/* Khối bọc form đăng nhập */
+.signin-wrap {
+    min-height: 100vh;
+    /* không phụ thuộc html/body height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    box-sizing: border-box;
+}
+
+/* Card chính của form */
+.signin-card {
+    width: 420px;
+    max-width: 100%;
+    background: var(--card, #e9eef6);
+    border-radius: 24px;
+    padding: 28px 28px 22px;
+    box-shadow: 18px 18px 44px var(--shadow-dark, #c7cfdf),
+        -18px -18px 44px var(--shadow-light, #ffffff);
+    position: relative;
+    box-sizing: border-box;
+}
+
+.signin-card .brand {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.signin-card .brand h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: .2px;
+    color: #2f3556;
+}
+
+.signin-card .subtitle {
+    color: var(--muted, #8d95b3);
+    font-size: .92rem;
+    margin-top: 4px;
+}
+
+/* Logo tròn */
+.signin-card .brand-logo {
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    margin-inline: auto;
+    margin-bottom: 14px;
+    display: grid;
+    place-items: center;
+    background: var(--card, #e9eef6);
+    box-shadow: 10px 10px 24px var(--shadow-dark, #c7cfdf),
+        -10px -10px 24px var(--shadow-light, #ffffff),
+        inset 0 0 0 var(--shadow-dark, #c7cfdf),
+        inset 0 0 0 var(--shadow-light, #ffffff);
+    overflow: hidden;
+}
+
+.signin-card .brand-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    display: block;
+}
+
+/* Form + nhóm input */
+.signin-card .form {
+    margin-top: 16px;
+}
+
+.signin-card .form-group {
+    margin-bottom: 16px;
+    position: relative;
+    padding-top: 8px;
+}
+
+/* Ô input (neumorphism) */
+.signin-card .input {
+    position: relative;
+    background: var(--card, #e9eef6);
+    border-radius: 12px;
+    height: 48px;
+    box-shadow: inset 8px 8px 16px var(--shadow-dark, #c7cfdf),
+        inset -8px -8px 16px var(--shadow-light, #ffffff);
+    transition: box-shadow .2s ease, transform .2s ease;
+    overflow: visible;
+    display: block !important;
+    visibility: visible !important;
+}
+
+.signin-card .input:focus-within {
+    box-shadow: inset 4px 4px 8px var(--shadow-dark, #c7cfdf),
+        inset -4px -4px 8px var(--shadow-light, #ffffff);
+}
+
+.signin-card .input input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    padding: 0 44px;
+    color: var(--text, #3f4668);
+    font-size: .96rem;
+    font-weight: 600;
+    box-sizing: border-box;
+}
+
+.signin-card .input input::placeholder {
+    color: transparent;
+}
+
+/* Floating label */
+.signin-card .input label {
+    position: absolute;
+    left: 44px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted, #8d95b3);
+    font-weight: 500;
+    pointer-events: none;
+    font-size: .96rem;
+    transition: all .18s ease;
+    z-index: 1;
+}
+
+.signin-card .input input:focus+label,
+.signin-card .input input:not(:placeholder-shown)+label,
+.signin-card .input input:-webkit-autofill+label,
+.signin-card .input input:-webkit-autofill:focus+label,
+.signin-card .input.focused label,
+.signin-card .input.has-value label {
+    top: -12px !important;
+    left: 44px !important;
+    transform: none !important;
+    font-size: .78rem !important;
+    line-height: 1.2 !important;
+    color: #6c7293 !important;
+    opacity: 1 !important;
+    background: var(--card, #e9eef6) !important;
+    padding: 0 6px !important;
+    border-radius: 6px !important;
+}
+
+/* Icon trái/phải và nút toggle mắt */
+.signin-card .leading-icon,
+.signin-card .trailing-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    color: #9aa2be;
+    display: grid;
+    place-items: center;
+}
+
+.signin-card .leading-icon {
+    left: 12px;
+}
+
+.signin-card .trailing-icon {
+    right: 12px;
+}
+
+.signin-card .toggle {
+    appearance: none;
+    border: 0;
+    background: var(--card, #e9eef6);
+    cursor: pointer;
+    border-radius: 10px;
+    width: 36px;
+    height: 36px;
+    box-shadow: 4px 4px 10px var(--shadow-dark, #c7cfdf),
+        -4px -4px 10px var(--shadow-light, #ffffff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signin-card .toggle .eye {
+    width: 18px;
+    height: 18px;
+}
+
+.signin-card .toggle .eye-closed {
+    display: none;
+}
+
+.signin-card .toggle.show .eye-open {
+    display: none;
+}
+
+.signin-card .toggle.show .eye-closed {
+    display: block;
+}
+
+/* Trạng thái lỗi */
+.signin-card .form-group>.error {
+    display: block;
+    min-height: 18px;
+    margin: 6px 4px 0 4px;
+    color: #e65376;
+    font-size: .8rem;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: all .18s ease;
+}
+
+.signin-card .form-group.invalid>.error {
+    opacity: 1;
+    transform: none;
+}
+
+.signin-card .form-group.invalid .input {
+    box-shadow: inset 8px 8px 16px #f0b7c0, inset -8px -8px 16px #ffffff, 0 0 0 2px #ff5c7a;
+}
+
+/* Link trong card */
+.signin-card .link {
+    color: #6b7195;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.signin-card .link:hover {
+    color: #41486a;
+}
+
+/* Checkbox “remember me” */
+.signin-card .remember {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: .92rem;
+    color: #6c6f91;
+    cursor: pointer;
+    user-select: none;
+}
+
+.signin-card .remember input {
+    display: none;
+}
+
+.signin-card .neu-box {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: var(--card, #e9eef6);
+    display: grid;
+    place-items: center;
+    color: #2fb68a;
+    box-shadow: 3px 3px 8px var(--shadow-dark, #c7cfdf), -3px -3px 8px var(--shadow-light, #ffffff);
+}
+
+.signin-card .neu-box svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0;
+    transform: scale(.6);
+    transition: all .2s ease;
+}
+
+.signin-card .remember input:checked+.neu-box svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Nút trong card (scoped, không ảnh hưởng trang khác) */
+.signin-card .btn {
+    width: 100%;
+    height: 50px;
+    border: 0;
+    cursor: pointer;
+    border-radius: 14px;
+    color: #303759;
+    font-weight: 700;
+    background: var(--card, #e9eef6);
+    box-shadow: 8px 8px 20px var(--shadow-dark, #c7cfdf),
+        -8px -8px 20px var(--shadow-light, #ffffff);
+    transition: transform .18s ease, box-shadow .18s ease, opacity .2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.signin-card .btn:hover {
+    transform: translateY(-1px);
+}
+
+.signin-card .btn:active {
+    transform: translateY(0);
+    box-shadow: inset 4px 4px 10px var(--shadow-dark, #c7cfdf),
+        inset -4px -4px 10px var(--shadow-light, #ffffff);
+}
+
+.signin-card .btn[disabled] {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.signin-card .btn .btn-text {
+    position: relative;
+    z-index: 2;
+}
+
+.signin-card .btn .btn-loader {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    transition: opacity .2s ease;
+}
+
+.signin-card .btn.loading .btn-text {
+    opacity: 0;
+}
+
+.signin-card .btn.loading .btn-loader {
+    opacity: 1;
+}
+
+.signin-card .spinner {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid var(--shadow-dark, #c7cfdf);
+    border-top-color: #727ba1;
+    animation: signin-spin 1s linear infinite;
+}
+
+@keyframes signin-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Divider + Social */
+.signin-card .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 2px;
+}
+
+.signin-card .divider .line {
+    height: 2px;
+    flex: 1;
+    background: linear-gradient(90deg, transparent, var(--ring, #d7deee), transparent);
+}
+
+.signin-card .divider .text {
+    color: #9aa2be;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+}
+
+.signin-card .social {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+
+.signin-card .social-btn {
+    width: 48px;
+    height: 48px;
+    border: 0;
+    border-radius: 12px;
+    cursor: pointer;
+    background: var(--card, #e9eef6);
+    color: #6b7396;
+    box-shadow: 6px 6px 16px var(--shadow-dark, #c7cfdf), -6px -6px 16px var(--shadow-light, #ffffff);
+    display: grid;
+    place-items: center;
+    transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+
+.signin-card .social-btn:hover {
+    transform: translateY(-2px);
+}
+
+.signin-card .social-btn:active {
+    transform: translateY(0);
+    box-shadow: inset 3px 3px 8px var(--shadow-dark, #c7cfdf), inset -3px -3px 8px var(--shadow-light, #ffffff);
+}
+
+.signin-card .social-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Thông báo thành công (trong card) */
+.signin-card .success {
+    display: none;
+    text-align: center;
+    padding: 18px 4px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all .25s ease;
+}
+
+.signin-card .success.show {
+    display: block;
+    opacity: 1;
+    transform: none;
+}
+
+.signin-card .neu-ring {
+    width: 72px;
+    height: 72px;
+    margin: 6px auto 10px;
+    border-radius: 50%;
+    background: var(--card, #e9eef6);
+    display: grid;
+    place-items: center;
+    color: #26be92;
+    box-shadow: 10px 10px 26px var(--shadow-dark, #c7cfdf), -10px -10px 26px var(--shadow-light, #ffffff),
+        inset 0 0 0 var(--shadow-dark, #c7cfdf), inset 0 0 0 var(--shadow-light, #ffffff);
+}
+
+.signin-card .neu-ring svg {
+    width: 38px;
+    height: 38px;
+}
+
+.signin-card .success h3 {
+    font-size: 1.25rem;
+    margin-bottom: 4px;
+}
+
+.signin-card .success p {
+    color: #92a0bf;
+    font-size: .92rem;
+}
+
+/* Đặt file này sau 15_sign_in.css, hoặc copy đoạn này dán vào cuối 15_sign_in.css */
+
+/* 1) Căn hàng Remember + Forgot password? */
+.signin-card .options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* Remember bên trái, Forgot bên phải */
+  gap: 12px;
+  margin: 12px 2px 18px;
+}
+
+/* 2) Style cho Remember checkbox neumorphic */
+.signin-card .remember {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .92rem;
+  color: #5f688d;
+  user-select: none;
+  cursor: pointer;
+}
+.signin-card .remember input {
+  display: none; /* ẩn input mặc định */
+}
+.signin-card .remember .neu-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--card, #e9eef6);
+  display: grid;
+  place-items: center;
+  color: #2fb68a;
+  box-shadow: 3px 3px 8px var(--shadow-dark, #c7cfdf), -3px -3px 8px var(--shadow-light, #ffffff);
+}
+.signin-card .remember .neu-box svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0;
+  transform: scale(.6);
+  transition: all .2s ease;
+}
+.signin-card .remember input:checked + .neu-box svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 3) Link Forgot password? bên phải, nổi bật vừa phải */
+.signin-card .options .link {
+  margin-left: auto;              /* đẩy về phải nếu cần */
+  font-size: .92rem;
+  color: #6b7195;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1;                 /* căn dọc cân */
+  padding: 4px 0;                 /* vùng click dễ hơn */
+}
+.signin-card .options .link:hover {
+  color: #41486a;
+  text-decoration: underline;
+}
+
+/* 4) Tăng khoảng cách nút Sign In với nhóm trên để thoáng hơn */
+.signin-card .btn.neu-button {
+  margin-top: 6px;
+}
+
+/* 5) CTA “Don’t have an account? Sign up” ở cuối thẻ, căn giữa */
+.signin-card .footnote {
+  margin-top: 18px;
+  text-align: center;
+  color: #6b7195;
+  font-size: .95rem;
+}
+.signin-card .footnote .link {
+  font-weight: 800;
+  color: #43507a;
+  text-decoration: none;
+}
+.signin-card .footnote .link:hover {
+  color: #2f3b64;
+  text-decoration: underline;
+}
+
+/* 6) Responsive: khi màn nhỏ, cho Forgot xuống dòng nếu thiếu chỗ */
+@media (max-width: 420px){
+  .signin-card .options {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+  .signin-card .options .link {
+    margin-left: 0; /* không ép về phải khi đã xuống dòng */
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .signin-card {
+        width: 94vw;
+        padding: 22px 18px;
+        border-radius: 20px;
+    }
+
+    .signin-card .brand h1 {
+        font-size: 1.45rem;
+    }
+
+    .signin-card .input {
+        height: 46px;
+    }
+}

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quản lý Sách</title>
+
+    <!-- Icon library (boxicons) -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/298979181c.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="../../css/00_variables.css">
+  <link rel="stylesheet" href="../../css/01_reset.css">
+  <link rel="stylesheet" href="../../css/02_layout.css">
+  <link rel="stylesheet" href="../../css/03_header.css">
+  <link rel="stylesheet" href="../../css/04_components.css">
+  <link rel="stylesheet" href="../../css/05_table_actions.css">
+  <link rel="stylesheet" href="../../css/06_modal.css">
+  <link rel="stylesheet" href="../../css/07_responsive.css">
+  <link rel="stylesheet" href="../../css/08_notifications_book.css">
+</head>
+<body>
+  <main class="content">
+    <div class="page-head">
+      <h1>Books</h1>
+      <div class="page-controls">
+        <button id="btn-refresh" title="Refresh"><i class='bx bx-refresh'></i></button>
+        <button id="btn-print" title="Print"><i class='bx bx-printer'></i></button>
+        <div class="export">
+          <button id="btn-export"><i class='bx bx-export'></i> Export <i class='bx bx-chevron-down'></i></button>
+          <div class="export-menu" id="export-menu" aria-hidden="true">
+            <button data-type="csv">Export CSV</button>
+            <button data-type="json">Export JSON</button>
+          </div>
+        </div>
+        <button id="btn-add" class="primary">Add Book</button>
+      </div>
+    </div>
+    <section class="card" id="section-books">
+      <div class="card-header">
+        <h2>Books</h2>
+        <div class="card-controls">
+          <label class="rows-per-page">
+            Row Per Page
+            <select id="select-page-size">
+              <option value="10" selected>10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+          <div class="table-search">
+            <input id="table-search" placeholder="Search table..." type="search" />
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table id="books-table" class="table">
+          <thead>
+            <tr>
+              <th data-col="maS"><span class="th-sort">Mã sách <span class="caret">▾</span></span></th>
+              <th data-col="TenS"><span class="th-sort">Tên sách <span class="caret">▾</span></span></th>
+              <th data-col="MaTheLoai"><span class="th-sort">Thể loại <span class="caret">▾</span></span></th>
+              <th data-col="Tacgia"><span class="th-sort">Tác giả <span class="caret">▾</span></span></th>
+              <th data-col="NamXB"><span class="th-sort">Năm XB <span class="caret">▾</span></span></th>
+              <th data-col="MaNhaXuatBan"><span class="th-sort">Nhà xuất bản <span class="caret">▾</span></span></th>
+              <th data-col="SoLuong"><span class="th-sort">Số lượng <span class="caret">▾</span></span></th>
+              <th data-col="TinhTrang"><span class="th-sort">Tình trạng <span class="caret">▾</span></span></th>
+              <th data-col="Action"><span class="th-sort">Thao tác <span class="caret">▾</span></span></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div id="table-empty" class="muted" hidden>Không có dữ liệu.</div>
+        <div class="card-footer">
+          <div id="table-info" class="table-info"></div>
+          <div id="pagination" class="pagination"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Modal: Thêm / Sửa sách -->
+  <div id="modal-book" class="modal" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title-book">
+      <button id="modal-close-book" class="modal-close" aria-label="Close">&times;</button>
+      <h3 id="modal-title-book">Thêm sách mới</h3>
+      <form id="modal-form-book" novalidate>
+        <div class="modal-grid">
+          <div class="form-field">
+            <label for="maS">Mã sách <span class="req">*</span></label>
+            <input id="maS" name="maS" type="text" required />
+          </div>
+          <div class="form-field">
+            <label for="TenS">Tên sách <span class="req">*</span></label>
+            <input id="TenS" name="TenS" type="text" required />
+          </div>
+          <div class="form-field">
+            <label for="MaTheLoai">Thể loại</label>
+            <select id="MaTheLoai" name="MaTheLoai">
+              <option value="">-- Chọn --</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="MaNhaXuatBan">Nhà xuất bản</label>
+            <select id="MaNhaXuatBan" name="MaNhaXuatBan">
+              <option value="">-- Chọn --</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="Tacgia">Tác giả</label>
+            <input id="Tacgia" name="Tacgia" type="text" />
+          </div>
+          <div class="form-field">
+            <label for="NamXB">Năm xuất bản</label>
+            <input id="NamXB" name="NamXB" type="text" inputmode="numeric" />
+          </div>
+          <div class="form-field">
+            <label for="SoLuong">Số lượng</label>
+            <input id="SoLuong" name="SoLuong" type="number" min="0" value="1" />
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="modal-cancel-book" type="button">Hủy</button>
+          <button id="modal-save-book" class="primary" type="submit">Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="../../js/books_js/notifications_book.js"></script>
+  <script src="../../js/books_js/book_api.js"></script>
+  <script src="../../js/books_js/book_ui.js"></script>
+</body>
+</html>
