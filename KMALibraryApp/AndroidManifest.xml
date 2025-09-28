@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- Quyền truy cập Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_content"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.KmaLibrary"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".ui.readermain.myloans.MyLoansDetailActivityIntentBuilder"
+            android:exported="false" />
+        <activity
+            android:name=".ui.readermain.myloans.MyLoansDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.borrow.BorrowActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.readermain.home.ReaderBookDetailActivity"
+            android:exported="false" /> <!-- Màn hình chính của app (có thể dùng cho điều hướng nội bộ) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.KmaLibrary.NoActionBar" /> <!-- Màn hình Đăng nhập: đặt làm LAUNCHER -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- Các màn hình chức năng -->
+        <activity
+            android:name=".ui.reader_signup.ReaderSignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.readermain.ReaderMainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.KmaLibrary.NoActionBar" />
+        <activity
+            android:name=".ui.loandetail.LoanDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.readerdetail.ReaderDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.bookdetail.BookDetailActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>
