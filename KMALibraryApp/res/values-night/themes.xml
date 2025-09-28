@@ -1,0 +1,25 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--
+    Theme cơ sở cho ứng dụng, sử dụng Material 3 DayNight và không có ActionBar mặc định.
+    Ở chế độ tối, nó sẽ tự động dùng các màu của theme tối.
+    -->
+    <style name="Theme.KmaLibrary" parent="Theme.Material3.DayNight.NoActionBar">
+        <!--
+        Bạn có thể tùy chỉnh các màu sắc cho chế độ tối ở đây nếu muốn.
+        Ví dụ:
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/black</item>
+        -->
+    </style>
+
+    <!--
+    Theme này được dùng riêng cho MainActivity.
+    Kế thừa từ theme chính để đảm bảo sự đồng bộ.
+    -->
+    <style name="Theme.KmaLibrary.NoActionBar" parent="Theme.KmaLibrary">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+</resources>

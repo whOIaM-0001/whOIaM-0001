@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_reader_home" android:title="Trang chủ" android:icon="@drawable/ic_home"/>
+<!--        <item android:id="@+id/nav_reader_borrow" android:title="Mượn sách" android:icon="@drawable/ic_menu_book_loan"/>-->
+        <item android:id="@+id/nav_reader_loans" android:title="Phiếu mượn" android:icon="@drawable/ic_list"/>
+<!--        <item android:id="@+id/nav_reader_profile" android:title="Tài khoản" android:icon="@drawable/ic_menu_people"/>-->
+    </group>
+
+    <group android:id="@+id/group_actions">
+        <item
+            android:id="@+id/nav_reader_logout"
+            android:title="Đăng xuất"
+            android:icon="@drawable/ic_logout"/>
+    </group>
+
+</menu>

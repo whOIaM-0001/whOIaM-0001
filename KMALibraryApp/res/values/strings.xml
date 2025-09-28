@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">KMALibrary</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_reader_main">ReaderMainActivity</string>
+
+    <!-- Loan stats -->
+    <string name="loan_total_title">Tổng phiếu mượn</string>
+    <string name="loan_total_qty_title">Tổng sách được mượn</string>
+    <string name="loan_overdue_title">Người mượn quá hạn</string>
+    <string name="loan_current_title">Người đang mượn</string>
+    <string name="loan_due_today_title">Sách đến hẹn trả</string>
+    <string name="loan_list_title">Danh sách phiếu mượn</string>
+
+    <!-- Book stats -->
+    <string name="book_total_titles">Tổng đầu sách</string>
+    <string name="book_total_quantity">Tổng số lượng</string>
+    <string name="book_available">Sách còn</string>
+    <string name="book_out_of_stock">Sách hết</string>
+    <string name="book_list_all">Danh sách tất cả đầu sách</string>
+</resources>

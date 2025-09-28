@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_book_stats"
+            android:icon="@drawable/ic_menu_stats"
+            android:title="Thống kê sách" />
+        <item
+            android:id="@+id/nav_reader_stats"
+            android:icon="@drawable/ic_menu_people"
+            android:title="Thống kê độc giả" />
+        <item
+            android:id="@+id/nav_loan_stats"
+            android:icon="@drawable/ic_menu_book_loan"
+            android:title="Thống kê người mượn" />
+    </group>
+
+    <!-- Nhóm dành cho các hành động, như Đăng xuất -->
+    <group android:id="@+id/group_actions">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="Đăng xuất" />
+    </group>
+
+</menu>

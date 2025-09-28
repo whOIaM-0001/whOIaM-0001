@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_book_stats">
+
+    <fragment
+        android:id="@+id/nav_book_stats"
+        android:name="com.example.kmalibrary.ui.bookstats.BookStatsFragment"
+        android:label="Thống kê sách"
+        tools:layout="@layout/fragment_book_stats" />
+
+    <fragment
+        android:id="@+id/nav_reader_stats"
+        android:name="com.example.kmalibrary.ui.readerstats.ReaderStatsFragment"
+        android:label="Thống kê Độc giả"
+        tools:layout="@layout/fragment_reader_stats" />
+
+    <fragment
+        android:id="@+id/nav_loan_stats"
+        android:name="com.example.kmalibrary.ui.loanstats.LoanStatsFragment"
+        android:label="Thống kê người mượn"
+        tools:layout="@layout/fragment_loan_stats" />
+</navigation>

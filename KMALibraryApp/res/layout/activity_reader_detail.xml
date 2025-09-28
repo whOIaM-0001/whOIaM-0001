@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.readerdetail.ReaderDetailActivity">
+
+    <!-- PHẦN HEADER ĐÃ ĐƯỢC THÊM VÀO -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="Chi tiết Độc giả" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Nội dung giữ nguyên -->
+            <TextView
+                style="@style/TextAppearance.Material3.LabelLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên độc giả" />
+
+            <TextView
+                android:id="@+id/tvDetailReaderName"
+                style="@style/TextAppearance.Material3.DisplaySmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textSize="18sp"
+                tools:text="Nguyễn Văn A" />
+            <TextView
+                style="@style/TextAppearance.Material3.LabelLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mã Sinh viên/Học viên" />
+
+            <TextView
+                android:id="@+id/tvDetailReaderId"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                tools:text="AT150101" />
+            <include layout="@layout/detail_item_row" android:id="@+id/rowNgaySinh"/>
+            <include layout="@layout/detail_item_row" android:id="@+id/rowLop"/>
+            <include layout="@layout/detail_item_row" android:id="@+id/rowSdt"/>
+            <include layout="@layout/detail_item_row" android:id="@+id/rowGmail"/>
+            <include layout="@layout/detail_item_row" android:id="@+id/rowGioiTinh"/>
+            <include layout="@layout/detail_item_row" android:id="@+id/rowChucVu"/>
+            <include layout="@layout/detail_item_row" android:id="@+id/rowNgayLamThe"/>
+            <include layout="@layout/detail_item_row" android:id="@+id/rowNgayHetHan"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

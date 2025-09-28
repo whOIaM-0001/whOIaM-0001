@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.readerstats.ReaderStatsFragment">
+
+    <!-- Phần thẻ Card, nằm cố định ở trên -->
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:padding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Các thẻ card của bạn ở đây (chị đã copy lại y hệt) -->
+        <com.google.android.material.card.MaterialCardView android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_margin="4dp" app:strokeWidth="1dp" app:strokeColor="@color/black"><LinearLayout android:orientation="vertical" android:padding="16dp" android:layout_width="match_parent" android:layout_height="wrap_content"><TextView style="@style/TextAppearance.Material3.TitleSmall" android:text="Tổng Độc giả" android:layout_width="wrap_content" android:layout_height="wrap_content"/><TextView android:id="@+id/tvTotalReaders" style="@style/TextAppearance.Material3.DisplaySmall" tools:text="100" android:layout_width="wrap_content" android:layout_height="wrap_content"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_margin="4dp" app:strokeWidth="1dp" app:strokeColor="@color/black"><LinearLayout android:orientation="vertical" android:padding="16dp" android:layout_width="match_parent" android:layout_height="wrap_content"><TextView style="@style/TextAppearance.Material3.TitleSmall" android:text="Tổng Nam" android:layout_width="wrap_content" android:layout_height="wrap_content"/><TextView android:id="@+id/tvTotalMale" style="@style/TextAppearance.Material3.DisplaySmall" tools:text="50" android:layout_width="wrap_content" android:layout_height="wrap_content"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_margin="4dp" app:strokeWidth="1dp" app:strokeColor="@color/black"><LinearLayout android:orientation="vertical" android:padding="16dp" android:layout_width="match_parent" android:layout_height="wrap_content"><TextView style="@style/TextAppearance.Material3.TitleSmall" android:text="Tổng Nữ" android:layout_width="wrap_content" android:layout_height="wrap_content"/><TextView android:id="@+id/tvTotalFemale" style="@style/TextAppearance.Material3.DisplaySmall" tools:text="50" android:layout_width="wrap_content" android:layout_height="wrap_content"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_margin="4dp" app:strokeWidth="1dp" app:strokeColor="@color/black"><LinearLayout android:orientation="vertical" android:padding="16dp" android:layout_width="match_parent" android:layout_height="wrap_content"><TextView style="@style/TextAppearance.Material3.TitleSmall" android:text="Tổng Sinh viên" android:layout_width="wrap_content" android:layout_height="wrap_content"/><TextView android:id="@+id/tvTotalStudents" style="@style/TextAppearance.Material3.DisplaySmall" tools:text="70" android:layout_width="wrap_content" android:layout_height="wrap_content"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_margin="4dp" app:strokeWidth="1dp" app:strokeColor="@color/black"><LinearLayout android:orientation="vertical" android:padding="16dp" android:layout_width="match_parent" android:layout_height="wrap_content"><TextView style="@style/TextAppearance.Material3.TitleSmall" android:text="Tổng Học viên" android:layout_width="wrap_content" android:layout_height="wrap_content"/><TextView android:id="@+id/tvTotalTrainees" style="@style/TextAppearance.Material3.DisplaySmall" tools:text="15" android:layout_width="wrap_content" android:layout_height="wrap_content"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_margin="4dp" app:strokeWidth="1dp" app:strokeColor="@color/black"><LinearLayout android:orientation="vertical" android:padding="16dp" android:layout_width="match_parent" android:layout_height="wrap_content"><TextView style="@style/TextAppearance.Material3.TitleSmall" android:text="Tổng Dân sự" android:layout_width="wrap_content" android:layout_height="wrap_content"/><TextView android:id="@+id/tvTotalCivilian" style="@style/TextAppearance.Material3.DisplaySmall" tools:text="10" android:layout_width="wrap_content" android:layout_height="wrap_content"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView android:layout_column="0" android:layout_columnSpan="2" android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_margin="4dp" app:strokeWidth="1dp" app:strokeColor="@color/black"><LinearLayout android:orientation="vertical" android:padding="16dp" android:layout_width="match_parent" android:layout_height="wrap_content"><TextView style="@style/TextAppearance.Material3.TitleSmall" android:text="Tổng Quốc tế" android:layout_width="wrap_content" android:layout_height="wrap_content"/><TextView android:id="@+id/tvTotalInternational" style="@style/TextAppearance.Material3.DisplaySmall" tools:text="5" android:layout_width="wrap_content" android:layout_height="wrap_content"/></LinearLayout></com.google.android.material.card.MaterialCardView>
+
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/tvReaderListTitle"
+        style="@style/TextAppearance.Material3.TitleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="Danh sách tất cả độc giả"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gridLayout" />
+
+    <!-- Phần danh sách, có thể cuộn -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvReaders"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvReaderListTitle"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_reader_summary" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
