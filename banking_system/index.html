@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Management System - SecureBank</title>
+    
+    <!-- ✅ ONLY ONE CSS FILE - COMPLETE STYLES -->
+    <link rel="stylesheet" href="assets/css/complete_styles.css">
+    
+    <!-- ✅ EXTERNAL RESOURCES -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- ✅ CRITICAL CSS FOR IMMEDIATE LOADING -->
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif !important; 
+            margin: 0; 
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .modal-backdrop { 
+            z-index: 9999 !important; 
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+        }
+        .modal-container { 
+            position: relative !important;
+            z-index: 10000 !important;
+        }
+        .form-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+            gap: 1.5rem !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- ==================== HEADER ==================== -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="header-center">
+                <div class="logo">
+                    <i class="fas fa-university logo-icon"></i>
+                    <span class="logo-text">SecureBank</span>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" name="search" placeholder="Tìm kiếm..." class="search-input" autocomplete="off">
+                </div>
+                <div class="profile-container">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span class="profile-name">whOIaM-0001</span>
+                    <i class="fas fa-chevron-down profile-arrow"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== NAVIGATION DRAWER ==================== -->
+    <nav class="nav-drawer" id="navDrawer">
+        <div class="nav-header">
+            <h3>Menu</h3>
+            <button class="nav-close" id="navClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" data-page="credit-card">
+                <i class="fas fa-credit-card"></i>
+                <span>Credit Card Detail</span>
+            </li>
+            <li class="nav-item" data-page="cccd">
+                <i class="fas fa-id-card"></i>
+                <span>CCCD Detail</span>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <main class="main-content">
+        <div class="overlay" id="overlay"></div>
+        
+        <!-- ==================== CREDIT CARD PAGE ==================== -->
+        <div class="content-page active" id="credit-card-page">
+            <div class="page-header">
+                <h1><i class="fas fa-credit-card"></i> Credit Card Management</h1>
+                <button class="btn-primary" id="addCreditCard">
+                    <i class="fas fa-plus"></i> Add New Card
+                </button>
+            </div>
+            <div class="table-container">
+                <div class="table-wrapper">
+                    <table class="data-table" id="creditCardTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Card Number</th>
+                                <th>Holder Name</th>
+                                <th>Expiry Date</th>
+                                <th>Card Type</th>
+                                <th>Bank Name</th>
+                                <th>Credit Limit</th>
+                                <th>Current Balance</th>
+                                <th>Available Credit</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be loaded via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== CCCD PAGE ==================== -->
+        <div class="content-page" id="cccd-page">
+            <div class="page-header">
+                <h1><i class="fas fa-id-card"></i> CCCD Management</h1>
+                <button class="btn-primary" id="addCCCD">
+                    <i class="fas fa-plus"></i> Add New CCCD
+                </button>
+            </div>
+            <div class="table-container">
+                <div class="table-wrapper">
+                    <table class="data-table" id="cccdTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>CCCD Number</th>
+                                <th>Full Name</th>
+                                <th>Date of Birth</th>
+                                <th>Gender</th>
+                                <th>Nationality</th>
+                                <th>Hometown</th>
+                                <th>Current Address</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Occupation</th>
+                                <th>Education</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be loaded via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ==================== ADD CREDIT CARD MODAL ==================== -->
+    <div class="modal-backdrop" id="addCardModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2><i class="fas fa-credit-card"></i> Thêm Thẻ Tín Dụng Mới</h2>
+                <button class="modal-close" onclick="bankingSystem.closeModal('addCardModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="modal-form" id="addCardForm">
+                <div class="form-section">
+                    <h3><i class="fas fa-credit-card"></i> Thông Tin Thẻ</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Tên Chủ Thẻ <span style="color: red;">*</span></label>
+                            <input type="text" name="card_holder_name" required placeholder="Nguyễn Văn An">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-credit-card"></i> Số Thẻ <span style="color: red;">*</span></label>
+                            <input type="text" name="card_number" required placeholder="1234 5678 9012 3456" maxlength="19">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar"></i> Ngày Hết Hạn <span style="color: red;">*</span></label>
+                            <input type="text" name="expiry_date" required placeholder="MM/YYYY" maxlength="7">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-lock"></i> Mã CVV <span style="color: red;">*</span></label>
+                            <input type="password" name="cvv" required placeholder="123" maxlength="4">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-key"></i> Mã PIN <span style="color: red;">*</span></label>
+                            <input type="password" name="pin_code" required placeholder="1234" maxlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-tags"></i> Loại Thẻ <span style="color: red;">*</span></label>
+                            <select name="card_type" required>
+                                <option value="">Chọn loại thẻ</option>
+                                <option value="Visa">Visa</option>
+                                <option value="MasterCard">MasterCard</option>
+                                <option value="JCB">JCB</option>
+                                <option value="American Express">American Express</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-university"></i> Ngân Hàng <span style="color: red;">*</span></label>
+                            <select name="bank_name" required>
+                                <option value="">Chọn ngân hàng</option>
+                                <option value="Vietcombank">Vietcombank</option>
+                                <option value="Techcombank">Techcombank</option>
+                                <option value="VPBank">VPBank</option>
+                                <option value="BIDV">BIDV</option>
+                                <option value="VietinBank">VietinBank</option>
+                                <option value="Sacombank">Sacombank</option>
+                                <option value="ACB">ACB</option>
+                                <option value="MB Bank">MB Bank</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-money-bill"></i> Hạn Mức Tín Dụng (VNĐ)</label>
+                            <input type="number" name="credit_limit" placeholder="50000000" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-chart-line"></i> Số Dư Hiện Tại (VNĐ)</label>
+                            <input type="number" name="current_balance" placeholder="0" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Số Điện Thoại</label>
+                            <input type="tel" name="phone_number" placeholder="0901234567">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" name="email" placeholder="example@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar-alt"></i> Ngày Phát Hành</label>
+                            <input type="text" name="issue_date" placeholder="MM/YYYY" maxlength="7">
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label><i class="fas fa-map-marker-alt"></i> Địa Chỉ Thanh Toán</label>
+                        <textarea name="billing_address" rows="3" placeholder="123 Đường ABC, Quận 1, TP.HCM"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="bankingSystem.closeModal('addCardModal')">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Lưu Thẻ
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== EDIT CREDIT CARD MODAL ==================== -->
+    <div class="modal-backdrop" id="editCardModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Chỉnh Sửa Thẻ Tín Dụng</h2>
+                <button class="modal-close" onclick="bankingSystem.closeModal('editCardModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="modal-form" id="editCardForm">
+                <input type="hidden" name="card_id" id="editCardId">
+                <div class="form-section">
+                    <h3><i class="fas fa-edit"></i> Cập Nhật Thông Tin</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Tên Chủ Thẻ</label>
+                            <input type="text" name="card_holder_name" id="editCardHolderName" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar"></i> Ngày Hết Hạn</label>
+                            <input type="text" name="expiry_date" id="editExpiryDate" required maxlength="7">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-tags"></i> Loại Thẻ</label>
+                            <select name="card_type" id="editCardType" required>
+                                <option value="Visa">Visa</option>
+                                <option value="MasterCard">MasterCard</option>
+                                <option value="JCB">JCB</option>
+                                <option value="American Express">American Express</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-university"></i> Ngân Hàng</label>
+                            <select name="bank_name" id="editBankName" required>
+                                <option value="Vietcombank">Vietcombank</option>
+                                <option value="Techcombank">Techcombank</option>
+                                <option value="VPBank">VPBank</option>
+                                <option value="BIDV">BIDV</option>
+                                <option value="VietinBank">VietinBank</option>
+                                <option value="Sacombank">Sacombank</option>
+                                <option value="ACB">ACB</option>
+                                <option value="MB Bank">MB Bank</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-money-bill"></i> Hạn Mức Tín Dụng (VNĐ)</label>
+                            <input type="number" name="credit_limit" id="editCreditLimit" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-chart-line"></i> Số Dư Hiện Tại (VNĐ)</label>
+                            <input type="number" name="current_balance" id="editCurrentBalance" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Số Điện Thoại</label>
+                            <input type="tel" name="phone_number" id="editPhoneNumber" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" name="email" id="editEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-info-circle"></i> Trạng Thái</label>
+                            <select name="status" id="editStatus" required>
+                                <option value="active">Hoạt động</option>
+                                <option value="inactive">Không hoạt động</option>
+                                <option value="blocked">Bị khóa</option>
+                                <option value="expired">Hết hạn</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label><i class="fas fa-map-marker-alt"></i> Địa Chỉ Thanh Toán</label>
+                        <textarea name="billing_address" id="editBillingAddress" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="bankingSystem.closeModal('editCardModal')">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Cập Nhật
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== VIEW CREDIT CARD MODAL ==================== -->
+    <div class="modal-backdrop" id="viewCardModal">
+        <div class="modal-container large">
+            <div class="modal-header">
+                <h2><i class="fas fa-eye"></i> Chi Tiết Thẻ Tín Dụng</h2>
+                <button class="modal-close" onclick="bankingSystem.closeModal('viewCardModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-form">
+                <!-- Credit Card Visual -->
+                <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+                    <div style="width: 350px; height: 220px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 15px; padding: 1.5rem; color: white; position: relative; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); font-family: 'Courier New', monospace;">
+                        <div style="width: 45px; height: 35px; background: linear-gradient(135deg, #ffd700, #ffed4e); border-radius: 6px; margin-bottom: 1rem;"></div>
+                        <div id="viewCardNumber" style="font-size: 1.4rem; font-weight: 600; letter-spacing: 2px; margin-bottom: 1rem;">**** **** **** 1234</div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <div id="viewCardHolder" style="font-size: 0.9rem; font-weight: 500;">NGUYEN VAN AN</div>
+                            </div>
+                            <div>
+                                <div id="viewCardExpiry" style="font-size: 0.8rem;">12/27</div>
+                            </div>
+                        </div>
+                        <div id="viewCardLogo" style="position: absolute; top: 1.5rem; right: 1.5rem; font-size: 1.3rem; font-weight: bold; font-family: 'Inter', sans-serif;">VISA</div>
+                    </div>
+                </div>
+
+                <!-- Card Details Grid -->
+                <div class="form-section">
+                    <h3><i class="fas fa-info-circle"></i> Thông Tin Chi Tiết</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fas fa-hashtag"></i> ID</label>
+                            <div style="padding: 0.75rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                                <span id="viewCardId">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-university"></i> Ngân Hàng</label>
+                            <div style="padding: 0.75rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                                <span id="viewBankName">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-money-bill"></i> Hạn Mức</label>
+                            <div style="padding: 0.75rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                                <span id="viewCreditLimit" style="color: #059669; font-weight: 600;">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-chart-line"></i> Số Dư</label>
+                            <div style="padding: 0.75rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                                <span id="viewCurrentBalance" style="color: #059669; font-weight: 600;">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-credit-card"></i> Khả Dụng</label>
+                            <div style="padding: 0.75rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                                <span id="viewAvailableCredit" style="color: #059669; font-weight: 600;">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Điện Thoại</label>
+                            <div style="padding: 0.75rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                                <span id="viewPhoneNumber">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email</label>
+                            <div style="padding: 0.75rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                                <span id="viewEmail">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-info-circle"></i> Trạng Thái</label>
+                            <div style="padding: 0.75rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                                <span id="viewStatus" class="status-badge">-</span>
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label><i class="fas fa-map-marker-alt"></i> Địa Chỉ</label>
+                            <div style="padding: 0.75rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                                <span id="viewBillingAddress">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Usage Statistics -->
+                <div class="form-section">
+                    <h3><i class="fas fa-chart-pie"></i> Thống Kê Sử Dụng</h3>
+                    <div style="text-align: center;">
+                        <div style="width: 100%; height: 25px; background: rgba(107, 114, 128, 0.2); border-radius: 12px; overflow: hidden; margin-bottom: 1rem;">
+                            <div id="viewUsageProgress" style="height: 100%; border-radius: 12px; transition: width 0.3s ease; background: linear-gradient(90deg, #10b981, #059669); width: 0%;"></div>
+                        </div>
+                        <div style="font-weight: 600; color: #667eea; font-size: 1.2rem;">
+                            <span id="viewUsagePercent">0%</span> đã sử dụng
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" onclick="bankingSystem.closeModal('viewCardModal')">
+                    <i class="fas fa-times"></i> Đóng
+                </button>
+                <button type="button" class="btn-primary" onclick="editFromView()">
+                    <i class="fas fa-edit"></i> Chỉnh Sửa
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== ADD CCCD MODAL ==================== -->
+    <div class="modal-backdrop" id="addCCCDModal">
+        <div class="modal-container large">
+            <div class="modal-header">
+                <h2><i class="fas fa-id-card"></i> Thêm CCCD Mới</h2>
+                <button class="modal-close" onclick="bankingSystem.closeModal('addCCCDModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="modal-form" id="addCCCDForm">
+                <!-- Thông Tin Cá Nhân -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user"></i> Thông Tin Cá Nhân</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fas fa-id-card"></i> Số CCCD <span style="color: red;">*</span></label>
+                            <input type="text" name="cccd_number" required placeholder="001234567890" maxlength="12">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Họ và Tên <span style="color: red;">*</span></label>
+                            <input type="text" name="full_name" required placeholder="Nguyễn Văn An">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-birthday-cake"></i> Ngày Sinh <span style="color: red;">*</span></label>
+                            <input type="text" name="date_of_birth" required placeholder="15/05/1990" maxlength="10" class="date-input">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-venus-mars"></i> Giới Tính <span style="color: red;">*</span></label>
+                            <select name="gender" required>
+                                <option value="">Chọn giới tính</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-flag"></i> Quốc Tịch</label>
+                            <input type="text" name="nationality" value="Việt Nam" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-home"></i> Quê Quán</label>
+                            <input type="text" name="hometown" required placeholder="Hà Nội">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Địa Chỉ & Liên Hệ -->
+                <div class="form-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> Địa Chỉ & Liên Hệ</h3>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label><i class="fas fa-home"></i> Địa Chỉ Thường Trú</label>
+                            <textarea name="permanent_address" rows="2" placeholder="123 Đường ABC, Phường XYZ, Quận 1, TP.HCM"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label><i class="fas fa-map-pin"></i> Địa Chỉ Hiện Tại</label>
+                            <textarea name="current_address" rows="2" placeholder="456 Đường DEF, Phường GHI, Quận 2, TP.HCM"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Số Điện Thoại <span style="color: red;">*</span></label>
+                            <input type="tel" name="phone_number" required placeholder="0901234567">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email <span style="color: red;">*</span></label>
+                            <input type="email" name="email" required placeholder="example@email.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thông Tin Nghề Nghiệp -->
+                <div class="form-section">
+                    <h3><i class="fas fa-briefcase"></i> Thông Tin Nghề Nghiệp</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fas fa-briefcase"></i> Nghề Nghiệp <span style="color: red;">*</span></label>
+                            <input type="text" name="occupation" required placeholder="Kỹ sư phần mềm">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-building"></i> Nơi Làm Việc</label>
+                            <input type="text" name="workplace" placeholder="Công ty ABC Technology">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-money-bill"></i> Thu Nhập Hàng Tháng (VNĐ)</label>
+                            <input type="number" name="monthly_income" placeholder="25000000" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-graduation-cap"></i> Trình Độ Học Vấn <span style="color: red;">*</span></label>
+                            <select name="education_level" required>
+                                <option value="">Chọn trình độ</option>
+                                <option value="Tiểu học">Tiểu học</option>
+                                <option value="THCS">THCS</option>
+                                <option value="THPT">THPT</option>
+                                <option value="Cao đẳng">Cao đẳng</option>
+                                <option value="Đại học">Đại học</option>
+                                <option value="Thạc sĩ">Thạc sĩ</option>
+                                <option value="Tiến sĩ">Tiến sĩ</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thông Tin Gia Đình -->
+                <div class="form-section">
+                    <h3><i class="fas fa-users"></i> Thông Tin Gia Đình</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fas fa-heart"></i> Tình Trạng Hôn Nhân <span style="color: red;">*</span></label>
+                            <select name="marital_status" required>
+                                <option value="">Chọn tình trạng</option>
+                                <option value="Độc thân">Độc thân</option>
+                                <option value="Đã kết hôn">Đã kết hôn</option>
+                                <option value="Đã ly hôn">Đã ly hôn</option>
+                                <option value="Góa phụ">Góa phụ</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-male"></i> Tên Cha</label>
+                            <input type="text" name="father_name" placeholder="Nguyễn Văn Bình">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-female"></i> Tên Mẹ</label>
+                            <input type="text" name="mother_name" placeholder="Trần Thị Cúc">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-baby"></i> Số Con</label>
+                            <input type="number" name="number_of_children" value="0" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liên Hệ Khẩn Cấp -->
+                <div class="form-section">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Liên Hệ Khẩn Cấp</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fas fa-user-friends"></i> Người Liên Hệ</label>
+                            <input type="text" name="emergency_contact" placeholder="Nguyễn Thị Mai">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-phone-alt"></i> SĐT Khẩn Cấp</label>
+                            <input type="tel" name="emergency_phone" placeholder="0987654321">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-link"></i> Mối Quan Hệ</label>
+                            <input type="text" name="emergency_relationship" placeholder="Chị gái">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thông Tin Giấy Tờ -->
+                <div class="form-section">
+                    <h3><i class="fas fa-file-alt"></i> Thông Tin Giấy Tờ</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar-plus"></i> Ngày Cấp <span style="color: red;">*</span></label>
+                            <input type="text" name="issue_date" required placeholder="01/01/2020" maxlength="10" class="date-input">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-map-marker"></i> Nơi Cấp <span style="color: red;">*</span></label>
+                            <input type="text" name="issue_place" required placeholder="Công an TP.HCM">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar-times"></i> Ngày Hết Hạn <span style="color: red;">*</span></label>
+                            <input type="text" name="expiry_date" required placeholder="01/01/2030" maxlength="10" class="date-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="bankingSystem.closeModal('addCCCDModal')">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Lưu CCCD
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>SecureBank</h4>
+                <p>Your trusted banking partner with advanced security.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Services</h4>
+                <ul>
+                    <li>Credit Card Management</li>
+                    <li>Identity Verification</li>
+                    <li>Secure Data Storage</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Security</h4>
+                <ul>
+                    <li>AES-256 Encryption</li>
+                    <li>Data Protection</li>
+                    <li>Privacy Policy</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p><i class="fas fa-phone"></i> 1900-1234</p>
+                <p><i class="fas fa-envelope"></i> support@securebank.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SecureBank. All rights reserved. | Powered by Advanced Encryption</p>
+        </div>
+    </footer>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="assets/js/optimized_main.js"></script>
+    
+    <!-- ✅ GLOBAL MODAL FUNCTIONS -->
+    <script>
+        // Global functions for modal controls
+        window.closeModal = function(modalId) {
+            if (window.bankingSystem) {
+                window.bankingSystem.closeModal(modalId);
+            }
+        };
+
+        window.editFromView = function() {
+            if (window.bankingSystem) {
+                window.bankingSystem.editFromView();
+            }
+        };
+
+        // Debug and initialization
+        window.addEventListener('load', function() {
+            console.log('🎨 Page fully loaded');
+            console.log('🔧 Banking System:', window.bankingSystem ? 'Initialized' : 'Not found');
+            
+            // Emergency CSS check
+            const testModal = document.getElementById('addCardModal');
+            if (testModal) {
+                const styles = getComputedStyle(testModal);
+                console.log('📋 Modal styles check:', {
+                    position: styles.position,
+                    zIndex: styles.zIndex,
+                    display: styles.display
+                });
+            }
+        });
+
+        // Enhanced error handling
+        window.addEventListener('error', function(e) {
+            console.error('🚨 Global Error:', e.error);
+        });
+    </script>
+</body>
+</html>
