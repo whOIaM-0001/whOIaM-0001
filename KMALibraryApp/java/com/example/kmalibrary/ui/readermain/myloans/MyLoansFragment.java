@@ -1,26 +1,20 @@
 package com.example.kmalibrary.ui.readermain.myloans;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.kmalibrary.databinding.FragmentMyLoansBinding;
 import com.example.kmalibrary.network.ApiClient;
 import com.example.kmalibrary.network.BorrowApiService;
-import com.example.kmalibrary.network.CheckCardResponse;
 import com.example.kmalibrary.network.MyLoanItem;
 import com.example.kmalibrary.network.MyLoanListResponse;
 import com.example.kmalibrary.network.WhoAmIReaderResponse;
@@ -40,7 +34,6 @@ public class MyLoansFragment extends Fragment {
 
     private SharedPreferences prefs;
     private static final String PREFS = "reader_prefs";
-    // Ràng buộc theo token hiện tại (nếu có lưu token string), nếu không thì theo email
     private static final String KEY_CACHED_READER_ID = "cached_reader_id"; // maSVHV hiện hành
     private static final String KEY_CACHED_EMAIL     = "cached_email";     // email hiện hành
 
@@ -65,7 +58,12 @@ public class MyLoansFragment extends Fragment {
         binding.rv.setAdapter(adapter);
 
         binding.swipe.setOnRefreshListener(this::loadAuto);
-        binding.btnChangeId.setOnClickListener(v -> askReaderId(true));
+
+        // Ẩn nút "Đổi" nếu layout còn nút này (không cần sửa XML ngay)
+        if (binding.btnChangeId != null) {
+            binding.btnChangeId.setVisibility(View.GONE);
+            binding.btnChangeId.setOnClickListener(null);
+        }
 
         // Lần nào mở màn cũng auto-detect theo token hiện tại
         loadAuto();
@@ -82,16 +80,15 @@ public class MyLoansFragment extends Fragment {
                     binding.tvReaderId.setText("Mã độc giả: " + ma);
                     loadLoans(ma);
                 } else {
-                    // Không tự tìm được → dùng cache nếu còn, hoặc cho nhập
-                    String cachedEmail = prefs.getString(KEY_CACHED_EMAIL, "");
-                    String cachedMa    = prefs.getString(KEY_CACHED_READER_ID, "");
+                    // Không tự tìm được → dùng cache nếu có
+                    String cachedMa = prefs.getString(KEY_CACHED_READER_ID, "");
                     if (cachedMa != null && !cachedMa.trim().isEmpty()) {
                         binding.tvReaderId.setText("Mã độc giả: " + cachedMa + " (cache)");
                         loadLoans(cachedMa);
                     } else {
                         showLoading(false);
                         binding.empty.setVisibility(View.VISIBLE);
-                        binding.empty.setText("Không xác định được mã độc giả. Nhấn 'Đổi' để nhập.");
+                        binding.empty.setText("Không xác định được mã độc giả.");
                         adapter.submit(new ArrayList<>());
                     }
                 }
@@ -140,44 +137,9 @@ public class MyLoansFragment extends Fragment {
         });
     }
 
-    private void askReaderId(boolean isChange){
-        final EditText input = new EditText(requireContext());
-        input.setHint("Nhập mã độc giả (maSVHV)");
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        new AlertDialog.Builder(requireContext())
-                .setTitle(isChange ? "Đổi mã độc giả" : "Mã độc giả của tôi")
-                .setView(input)
-                .setNegativeButton("Hủy", null)
-                .setPositiveButton("Lưu", (DialogInterface dialog, int which) -> {
-                    String id = safe(input.getText());
-                    if (id.isEmpty()) {
-                        Toast.makeText(getContext(), "Vui lòng nhập mã độc giả", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    api.checkCard("checkCard", id).enqueue(new Callback<CheckCardResponse>() {
-                        @Override public void onResponse(@NonNull Call<CheckCardResponse> call, @NonNull Response<CheckCardResponse> resp) {
-                            if (resp.isSuccessful() && resp.body()!=null && resp.body().ok) {
-                                // Gắn theo context hiện tại, không để lẫn giữa user
-                                cacheCurrent(prefs.getString(KEY_CACHED_EMAIL, ""), id);
-                                binding.tvReaderId.setText("Mã độc giả: " + id);
-                                loadLoans(id);
-                            } else {
-                                String msg = (resp.body()!=null && resp.body().error!=null) ? resp.body().error : "Mã độc giả không hợp lệ";
-                                Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        @Override public void onFailure(@NonNull Call<CheckCardResponse> call, @NonNull Throwable t) {
-                            Toast.makeText(getContext(), "Lỗi mạng: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                })
-                .show();
-    }
-
     private void cacheCurrent(String email, String ma){
-        // Lưu cặp hiện hành để lần sau vào lại vẫn đúng người đang đăng nhập
         if (email != null) prefs.edit().putString(KEY_CACHED_EMAIL, email).apply();
-        if (ma != null) prefs.edit().putString(KEY_CACHED_READER_ID, ma).apply();
+        if (ma != null)    prefs.edit().putString(KEY_CACHED_READER_ID, ma).apply();
     }
 
     private void showLoading(boolean on){
