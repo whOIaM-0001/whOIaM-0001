@@ -66,10 +66,14 @@ try{
   $st->execute([$ma]);
   $rows = $st->fetchAll(PDO::FETCH_ASSOC);
 
-  // Cập nhật trạng thái trong response (không ép buộc ghi DB)
+  // Cập nhật trạng thái trong response (không ghi DB)
   $today = today();
   foreach ($rows as &$r){
-    if (($r['TinhTrang'] ?? '') !== 'Đã trả') {
+    $cur = trim((string)($r['TinhTrang'] ?? ''));
+    if ($cur === 'Chờ nhận sách') {
+      // Giữ nguyên pending, không tính quá hạn
+      $r['NgayQuaHan'] = 0;
+    } else if ($cur !== 'Đã trả') {
       [$status, $overdue] = compute_status($today, $r['NgayTra'] ?? '');
       $r['TinhTrang'] = $status;
       $r['NgayQuaHan'] = $overdue;
