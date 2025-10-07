@@ -1,5 +1,5 @@
 <?php
-// Reader create loan (public) — allow Admin/Librarian/Reader to POST create; same validations as bookloan.php
+// Reader create loan (public) — allow Admin/Librarian/Reader to POST create
 declare(strict_types=1);
 
 header("Access-Control-Allow-Origin: *");
@@ -28,7 +28,6 @@ try {
     }
   }
   if(!$found) out(500, ['ok'=>false,'error'=>'Không tìm thấy config/auth_middleware.php']);
-  // DB via config.php
   $pdo=new PDO($DB_DSN,$DB_USER,$DB_PASS,$DB_OPTIONS);
 } catch(Throwable $e){ out(500, ['ok'=>false,'error'=>'DB connect error']); }
 
@@ -62,6 +61,7 @@ function reserve_stock(PDO $pdo, $maS, $qty){
   if($st->rowCount()===0) throw new Exception('Không đủ số lượng tồn kho', 422);
 }
 
+// Validate
 foreach (['MaPhieuMuon','MaBanDoc','MaSach','NgayMuon','NgayTra'] as $f){
   if (empty($input[$f])) out(422, ['ok'=>false,'error'=>"$f bắt buộc"]);
 }
@@ -83,24 +83,35 @@ $cReader = $pdo->prepare("SELECT 1 FROM cardregister WHERE TRIM(maSVHV)=?");
 $cReader->execute([trim($input['MaBanDoc'])]);
 if (!$cReader->fetch()) out(422, ['ok'=>false,'error'=>'Mã bạn đọc không tồn tại']);
 
+// Create
 try{
   $pdo->beginTransaction();
-  reserve_stock($pdo, $input['MaSach'], $SoLuongMuon);
-  [$status, $overdue] = status_for(today(), $input['NgayTra']);
+
+  if ($role === 'reader') {
+    // ĐẶT TRƯỚC: KHÔNG trừ kho, set trạng thái "Chờ nhận sách"
+    $status = 'Chờ nhận sách';
+    $overdue = 0; // chưa tính
+  } else {
+    // Nhân sự thư viện tạo trực tiếp: trừ kho ngay & tính trạng thái
+    reserve_stock($pdo, $input['MaSach'], $SoLuongMuon);
+    [$status, $overdue] = status_for(today(), $input['NgayTra']);
+  }
+
   $ins = $pdo->prepare("INSERT INTO quanlymuon (MaPhieuMuon, MaBanDoc, MaSach, NgayMuon, NgayTra, SoLuongMuon, TinhTrang, NgayQuaHan)
                         VALUES (?,?,?,?,?,?,?,?)");
   $ins->execute([
     $input['MaPhieuMuon'],
     $input['MaBanDoc'],
     $input['MaSach'],
-    $input['NgayMuon'],
+    $input['NgayMuon'], // ghi tạm ngày đặt; nếu Reader sẽ overwrite khi xác nhận
     $input['NgayTra'],
     $SoLuongMuon,
     $status,
     $overdue
   ]);
+
   $pdo->commit();
-  out(201, ['ok'=>true,'MaPhieuMuon'=>$input['MaPhieuMuon']]);
+  out(201, ['ok'=>true,'MaPhieuMuon'=>$input['MaPhieuMuon'],'TinhTrang'=>$status]);
 }catch(Throwable $e){
   if ($pdo->inTransaction()) $pdo->rollBack();
   $code = (int)($e->getCode() ?: 500);
