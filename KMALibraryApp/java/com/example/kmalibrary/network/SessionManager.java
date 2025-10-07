@@ -10,6 +10,7 @@ public class SessionManager {
     private static final String KEY_USER_NAME  = "user_name";
     private static final String KEY_USER_EMAIL = "user_email";
     private static final String KEY_USER_ROLE  = "user_role"; // THÊM: lưu Role
+    private static final String KEY_CARD_ID    = "card_id";   // THÊM: lưu maSVHV
 
     private final SharedPreferences prefs;
     private final SharedPreferences.Editor editor;
@@ -37,6 +38,16 @@ public class SessionManager {
     public void saveUserRole(String role) {
         editor.putString(KEY_USER_ROLE, role);
         editor.apply();
+    }
+
+    // THÊM: set/get maSVHV
+    public void saveCardId(String cardId) {
+        if (cardId == null) return;
+        editor.putString(KEY_CARD_ID, cardId.trim());
+        editor.apply();
+    }
+    public String fetchCardId() {
+        return prefs.getString(KEY_CARD_ID, null);
     }
 
     public String fetchAuthToken()   { return prefs.getString(KEY_AUTH_TOKEN, null); }
