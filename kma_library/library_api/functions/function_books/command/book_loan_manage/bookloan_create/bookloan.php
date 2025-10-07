@@ -32,9 +32,7 @@ function parseYMD($s){
   if (!preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', (string)$s, $m)) return null;
   return ['y'=>(int)$m[1],'m'=>(int)$m[2],'d'=>(int)$m[3]];
 }
-function todayYMD(){
-  return (new DateTime('today'))->format('Y-m-d');
-}
+function todayYMD(){ return (new DateTime('today'))->format('Y-m-d'); }
 function addMonths($ymd, $months){
   $dt = DateTime::createFromFormat('Y-m-d', $ymd);
   if (!$dt) return '';
@@ -80,7 +78,9 @@ if ($method === 'GET') {
     $stmt->execute([$id]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$row) { http_response_code(404); echo json_encode(['ok'=>false,'error'=>'Not found']); exit; }
-    if ($row['TinhTrang'] !== 'Đã trả') {
+
+    // Auto-status: BỎ QUA PENDING
+    if ($row['TinhTrang'] !== 'Đã trả' && $row['TinhTrang'] !== 'Chờ nhận sách') {
       $today = todayYMD();
       list($status, $overdue) = status_for($today, $row['NgayTra']);
       if ($status !== $row['TinhTrang'] || (int)$overdue !== (int)$row['NgayQuaHan']) {
@@ -91,6 +91,7 @@ if ($method === 'GET') {
     }
     echo json_encode(['ok'=>true,'data'=>$row]); exit;
   }
+
   $q = isset($_GET['q']) ? "%{$_GET['q']}%" : '%';
   $stmt = $pdo->prepare("SELECT MaPhieuMuon, MaBanDoc, MaSach, NgayMuon, NgayTra, SoLuongMuon, TinhTrang, NgayQuaHan
                          FROM quanlymuon
@@ -101,7 +102,7 @@ if ($method === 'GET') {
 
   $today = todayYMD();
   foreach ($rows as &$r) {
-    if ($r['TinhTrang'] === 'Đã trả') continue;
+    if ($r['TinhTrang'] === 'Đã trả' || $r['TinhTrang'] === 'Chờ nhận sách') continue;
     list($status, $overdue) = status_for($today, $r['NgayTra']);
     if ($status !== $r['TinhTrang'] || (int)$overdue !== (int)$r['NgayQuaHan']) {
       $upd = $pdo->prepare("UPDATE quanlymuon SET TinhTrang=?, NgayQuaHan=? WHERE TRIM(MaPhieuMuon)=?");
@@ -123,6 +124,13 @@ if ($method === 'PUT' && $action === 'return') {
     $stmt->execute([$id]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$row) { $pdo->rollBack(); http_response_code(404); echo json_encode(['ok'=>false,'error'=>'Not found']); exit; }
+
+    if ($row['TinhTrang'] === 'Chờ nhận sách') {
+      $pdo->rollBack();
+      http_response_code(409);
+      echo json_encode(['ok'=>false,'error'=>'Phiếu đang chờ nhận sách, chưa thể trả']); exit;
+    }
+
     if ($row['TinhTrang'] !== 'Đã trả') {
       release_stock($pdo, $row['MaSach'], (int)$row['SoLuongMuon']);
       $today = todayYMD();
@@ -149,7 +157,7 @@ if ($method === 'PUT' && $action === 'return') {
   }
 }
 
-// POST: create (mượn)
+// POST: create (mượn) — (Web Admin/Librarian tạo trực tiếp → vẫn trừ kho)
 if ($method === 'POST') {
   foreach (['MaPhieuMuon','MaBanDoc','MaSach','NgayMuon','NgayTra'] as $f) {
     if (empty($input[$f])) { http_response_code(422); echo json_encode(['ok'=>false,'error'=>"$f bắt buộc"]); exit; }
@@ -234,19 +242,25 @@ if ($method === 'PUT' && $action === '') {
     $row = $cur->fetch(PDO::FETCH_ASSOC);
     if (!$row) { $pdo->rollBack(); http_response_code(404); echo json_encode(['ok'=>false,'error'=>'Not found']); exit; }
 
+    $isPending = ($row['TinhTrang'] === 'Chờ nhận sách');
+
     $newMaSach = array_key_exists('MaSach',$input) ? trim($input['MaSach']) : $row['MaSach'];
     $newSL     = array_key_exists('SoLuongMuon',$input) ? (int)$input['SoLuongMuon'] : (int)$row['SoLuongMuon'];
 
     $oldMaSach = $row['MaSach'];
     $oldSL     = (int)$row['SoLuongMuon'];
 
-    if ($newMaSach !== $oldMaSach) {
-      release_stock($pdo, $oldMaSach, $oldSL);
-      reserve_stock($pdo, $newMaSach, $newSL);
-    } else {
-      $delta = $newSL - $oldSL;
-      if ($delta > 0) reserve_stock($pdo, $newMaSach, $delta);
-      else if ($delta < 0) release_stock($pdo, $newMaSach, -$delta);
+    // Điều chỉnh tồn kho: chỉ thực hiện khi KHÔNG ở trạng thái "Chờ nhận sách"
+    if (!$isPending) {
+      if ($newMaSach !== $oldMaSach) {
+        // Trả lại tồn cũ, trừ tồn mới
+        release_stock($pdo, $oldMaSach, $oldSL);
+        reserve_stock($pdo, $newMaSach, $newSL);
+      } else {
+        $delta = $newSL - $oldSL;
+        if ($delta > 0) reserve_stock($pdo, $newMaSach, $delta);
+        else if ($delta < 0) release_stock($pdo, $newMaSach, -$delta);
+      }
     }
 
     $vals_for_update = $vals; $vals_for_update[] = $id;
@@ -254,7 +268,8 @@ if ($method === 'PUT' && $action === '') {
     $stmt = $pdo->prepare($sql);
     $stmt->execute($vals_for_update);
 
-    if ($row['TinhTrang'] !== 'Đã trả') {
+    // Auto-status sau khi sửa: bỏ qua nếu "Đã trả" hoặc "Chờ nhận sách"
+    if ($row['TinhTrang'] !== 'Đã trả' && !$isPending) {
       $stmt1 = $pdo->prepare("SELECT NgayTra FROM quanlymuon WHERE TRIM(MaPhieuMuon)=? LIMIT 1");
       $stmt1->execute([$id]);
       $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
@@ -277,7 +292,7 @@ if ($method === 'PUT' && $action === '') {
   }
 }
 
-// DELETE: xóa phiếu (hoàn kho nếu chưa trả)
+// DELETE: xóa phiếu
 if ($method === 'DELETE') {
   if (!$id) { http_response_code(400); echo json_encode(['ok'=>false,'error'=>'id required']); exit; }
   try {
@@ -286,7 +301,8 @@ if ($method === 'DELETE') {
     $stmt->execute([$id]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row) {
-      if ($row['TinhTrang'] !== 'Đã trả') {
+      // Chỉ hoàn kho nếu KHÔNG phải "Đã trả" và KHÔNG phải "Chờ nhận sách"
+      if ($row['TinhTrang'] !== 'Đã trả' && $row['TinhTrang'] !== 'Chờ nhận sách') {
         release_stock($pdo, $row['MaSach'], (int)$row['SoLuongMuon']);
       }
       $del = $pdo->prepare("DELETE FROM quanlymuon WHERE TRIM(MaPhieuMuon)=?");
