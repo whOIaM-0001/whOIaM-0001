@@ -12,19 +12,26 @@ public interface ApiService {
     @POST("library_api/functions/function_books/command/accounts/sign_in.php")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
-    // BỎ HOÀN TOÀN tham số @Header("Authorization") String token
-    // ApiClient sẽ tự động làm việc này cho chúng ta!
+    // ApiClient tự gắn Authorization
     @GET("library_api/functions/function_books/command/books/books_database/books_table.php")
-    Call<BookListResponse> getAllBooks(); // <--- Đã được đơn giản hóa!
+    Call<BookListResponse> getAllBooks();
 
     @GET("library_api/functions/function_books/command/accounts/sign_in.php")
     Call<MeResponse> me(@Query("action") String action);
+
+    // THÊM: whoAmI_reader để lấy maSVHV cho người dùng hiện tại
+    @GET("library_api/functions/function_books/command/accounts/whoami_reader.php")
+    Call<WhoAmIReaderResponse> whoAmIReader();
 
     @GET("library_api/functions/function_books/command/card/card_manage/cardregister.php")
     Call<ReaderListResponse> getAllReaders();
 
     @GET("library_api/functions/function_books/command/book_loan_manage/bookloan_create/bookloan.php")
     Call<LoanRecordListResponse> getAllLoans();
+
+    // THÊM: phiếu mượn của tôi (ma = maSVHV)
+    @GET("library_api/functions/function_books/command/book_loan_manage/bookloan_create/bookloan_my.php")
+    Call<MyLoanListResponse> getMyLoans(@Query("ma") String ma);
 
     // Reader SignUp
     @GET("library_api/functions/function_books/command/accounts/sign_up.php")
@@ -38,5 +45,4 @@ public interface ApiService {
 
     @GET("library_api/functions/function_books/command/books/books_database/books_table_public.php")
     Call<BookListResponse> getBooksForReader();
-
 }
